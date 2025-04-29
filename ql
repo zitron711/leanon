@@ -1,92 +1,135 @@
-// Base styles
+// Main container
 .content-tab_quicklist {
-  &.quick-list--icons,
-  &.quick-list--arrows {
-    // Add any listType specific overrides here
-  }
+  width: 100%;
+  display: flex;
+  flex-direction: column;
 
-  &.white {
-    .quick-list-item {
-      border-color: $color-primary-white;
+  // Theme modifiers
+  &.theme-default {
+    color: #0070d2;
 
-      .uc-quick-list__caret,
-      .uc-quick-list__heading,
-      .uc-heading__subheadline {
-        color: $color-primary-white;
-      }
+    .uc-quick-list__icon svg,
+    .uc-quick-list_caret {
+      color: #cc0000;
+    }
+
+    .uc-quick-list-item--with-line {
+      border-bottom: 1px solid #0070d2;
     }
   }
 
-  &.red {
-    .uc-heading__subheadline {
-      color: $color-black;
+  &.theme-white {
+    color: #ffffff;
+
+    .uc-quick-list__icon svg,
+    .uc-quick-list_caret {
+      color: #ffffff;
+    }
+
+    .uc-quick-list-item--with-line {
+      border-bottom: 1px solid #ffffff;
+    }
+  }
+
+  &.theme-gray {
+    color: #000000;
+
+    .uc-quick-list__icon svg,
+    .uc-quick-list_caret {
+      color: #cc0000;
+    }
+
+    .uc-quick-list-item--with-line {
+      border-bottom: 1px solid #000000;
     }
   }
 }
 
-// Each item
+// Individual list item
 .quick-list-item {
-  margin-bottom: $uc-pad-150;
+  width: 100%;
 }
 
-// List item container
+// Wrapper component
 .uc-quick-list-item {
-  display: block;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 0;
+  text-decoration: none;
+  width: 100%;
 
-  &[line="true"] {
-    border-bottom: 1px solid $color-secondary-blue-royal-50;
-
-    &:last-child {
-      border-bottom: none;
-    }
+  &--with-line {
+    border-bottom: 1px solid;
   }
 
-  // Element wrapper inside anchor or div
-  &_element {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-
-  // Link version
-  &_link {
-    text-decoration: none;
-    color: inherit;
-
-    &:hover {
+  &:hover {
+    .uc-quick-list__heading {
       text-decoration: underline;
     }
-
-    &.sticky-banner_content {
-      // If there are sticky-banner specific overrides
-    }
   }
 }
 
-// Icon block (if listType is 'icons')
+// Clickable wrapper (link version)
+.uc-quick-list-item_link {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  color: inherit;
+  text-decoration: none;
+}
+
+// Icon container
 .uc-quick-list__icon {
-  width: rem(36px);
-  flex-shrink: 0;
+  margin-right: 1rem;
+  display: flex;
+  align-items: center;
+
+  svg {
+    width: 24px;
+    height: 24px;
+  }
 }
 
-// Heading block
+// Heading container
 .uc-quick-list__heading {
-  width: calc(100% - rem(36px)); // icon takes 36px
-  .uc-heading__headline {
-    @include fontCon(); // Use your font config mixin
+  flex: 1;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+// Caret arrow
+.uc-quick-list_caret {
+  margin-left: auto;
+  font-size: 1.5rem;
+  display: flex;
+  align-items: center;
+}
+
+// Responsive layout
+@media (max-width: 767px) {
+  .uc-quick-list-item {
+    flex-direction: column;
+    align-items: flex-start;
   }
 
-  .uc-heading__subheadline {
-    font-size: $font-size-14;
-    margin-top: $uc-pad-050;
-    margin-bottom: $uc-pad-050;
+  .uc-quick-list_caret {
+    align-self: flex-end;
+  }
+
+  .uc-quick-list__icon {
+    margin-bottom: 0.5rem;
   }
 }
 
-// Caret icon (arrows)
-.uc-quick-list__caret {
-  font-size: $font-size-20;
-  color: $color-secondary-blue-royal;
+@media (min-width: 768px) and (max-width: 1023px) {
+  .uc-quick-list-item {
+    flex-direction: row;
+  }
+}
 
-  // Theming handled above
+@media (min-width: 1024px) {
+  .uc-quick-list-item {
+    flex-direction: row;
+  }
 }
