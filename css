@@ -1,0 +1,153 @@
+// Quick List Component Main Container
+.content-tab_quicklist {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  padding: 1rem; // optional padding
+}
+
+// Quick List Tile Item
+.quick-list-item {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+// Tile inside each Quick List Item
+.tile {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  text-decoration: none;
+  padding: 1rem 0;
+  transition: all 0.3s ease-in-out;
+}
+
+// Make whole item clickable with hover underline for headline
+.quick-list-item_link {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  text-decoration: none;
+  position: relative;
+  color: inherit;
+
+  &:hover {
+    .quick-list-item_heading {
+      text-decoration: underline;
+    }
+  }
+}
+
+// Icon inside the Quick List
+.quick-list-item_icon {
+  margin-right: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  svg {
+    width: 24px;
+    height: 24px;
+  }
+}
+
+// Heading inside Quick List
+.quick-list-item_heading {
+  flex: 1;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+// Arrow icon
+.hx-icon-interactive-caret-right {
+  margin-left: auto;
+  font-size: 1.5rem;
+  display: flex;
+  align-items: center;
+}
+
+// Divider line
+.divider {
+  border: 0;
+  border-top: 1px solid;
+  margin: 0.5rem 0;
+  width: 100%;
+}
+
+// -------- THEME BASED STYLES --------
+
+// Default Theme (blue + red)
+.content-tab_quicklist.theme-default {
+  color: #0070d2; // blue text
+}
+
+.theme-default .quick-list-item_icon svg,
+.theme-default .hx-icon-interactive-caret-right {
+  color: #cc0000; // red icon and red arrow
+}
+
+.theme-default .divider {
+  border-top-color: #0070d2; // blue divider
+}
+
+// White Theme (everything white)
+.content-tab_quicklist.theme-white {
+  color: #ffffff; // white text
+}
+
+.theme-white .quick-list-item_icon svg,
+.theme-white .hx-icon-interactive-caret-right {
+  color: #ffffff; // white icon and white arrow
+}
+
+.theme-white .divider {
+  border-top-color: #ffffff; // white divider
+}
+
+// Gray Theme (custom theme you added)
+.content-tab_quicklist.theme-gray {
+  color: #000000; // black text
+}
+
+.theme-gray .quick-list-item_icon svg,
+.theme-gray .hx-icon-interactive-caret-right {
+  color: #cc0000; // red icon and red arrow
+}
+
+.theme-gray .divider {
+  border-top-color: #000000; // black divider
+}
+
+// -------- RESPONSIVE DESIGN --------
+
+// Mobile
+@media (max-width: 767px) {
+  .tile {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .quick-list-item_icon {
+    margin-bottom: 0.5rem;
+  }
+
+  .hx-icon-interactive-caret-right {
+    align-self: flex-end;
+  }
+}
+
+// Tablet
+@media (min-width: 768px) and (max-width: 1023px) {
+  .tile {
+    flex-direction: row;
+  }
+}
+
+// Desktop
+@media (min-width: 1024px) {
+  .tile {
+    flex-direction: row;
+  }
+}
