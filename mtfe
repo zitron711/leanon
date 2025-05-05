@@ -1,0 +1,55 @@
+<!-- Edit Mode Banner -->
+<div data-sly-test="${wcmmode.edit || wcmmode.preview}" class="aem-helper">
+  Edit: Modular Tile Component
+</div>
+
+<!-- Use Model -->
+<sly data-sly-use.model="com.baml.aem.unity.core.models.ModularTiles" />
+
+<!-- Content Wrapper -->
+<div class="content-tab column number_${model.numberOfColumn} tile_height_${model.tileMinimumHeight}">
+
+  <!-- Check if tiles exist -->
+  <sly data-sly-test="${model.modularTileItems}">
+    <div class="modular-tile">
+    
+      <!-- Loop through tile items -->
+      <sly data-sly-list.item="${model.modularTileItems}">
+        <div class="tile">
+          <a id="${item.itemId}" 
+             data-tileVariant="${item.tileVariant}" 
+             data-contentPosition="${item.contentPosition}" 
+             data-backgroundColor="${item.backgroundColor}">
+
+            <!-- Check for textvariant type -->
+            <div class="uc-modular-tiles_text" data-sly-test="${item.tileVariant == 'textvariant'}">
+
+              <!-- Icon Resource -->
+              <div id="${item.itemId}-icon">
+                <sly data-sly-resource="${item.itemId}-icon @ 
+                    resourceType='unity/core/components/icon/v1/icon',
+                    addSelectors='',
+                    addSuffix='',
+                    decorationTagName='div',
+                    wcmmode='disabled'" />
+              </div>
+
+              <!-- Heading Resource -->
+              <div id="${item.itemId}-heading">
+                <sly data-sly-resource="${item.itemId}-heading @ 
+                    resourceType='unity/core/components/heading-group/v1/heading-group',
+                    addSelectors='',
+                    addSuffix='',
+                    decorationTagName='div',
+                    wcmmode='disabled'" />
+              </div>
+
+            </div> <!-- /.uc-modular-tiles_text -->
+          </a>
+        </div> <!-- /.tile -->
+      </sly>
+
+    </div> <!-- /.modular-tile -->
+  </sly>
+
+</div>
