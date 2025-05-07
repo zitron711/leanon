@@ -1,54 +1,89 @@
 .content-tab_modulartile {
+  width: 100%;
+  padding: 1rem;
   display: flex;
   flex-direction: column;
-  gap: 24px;
+  gap: 1.5rem;
+  background-color: inherit;
+}
 
-  .modular-tile-item {
-    width: 100%;
+.modular-tile-item {
+  border-radius: 16px;
+  background-color: var(--primary-white-ffffff, #fff);
+  box-shadow: 0px 10px 6px rgba(0, 0, 0, 0.04),
+              0px 4px 4px rgba(0, 0, 0, 0.07),
+              0px 1px 2px rgba(0, 0, 0, 0.08);
+  padding: 2.5rem; // 40px
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  box-sizing: border-box;
+  width: 100%;
+  gap: 1rem;
+}
 
-    .uc-modular-tile-item {
-      display: block;
+.uc-modular-tile-item_textvariant {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  width: 100%;
+  text-decoration: none;
+  color: inherit;
+  flex-wrap: wrap;
+  background-color: transparent;
+}
 
-      &.textvariant {
-        background-color: #fff; // fallback if no bg-color class
-        border-radius: 12px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08);
-        padding: 16px 20px;
-        transition: box-shadow 0.3s ease;
+.uc-modular-tile__icon {
+  flex-shrink: 0;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 
-        &:hover {
-          box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
-        }
+.uc-modular-tile_heading {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  min-width: 0;
+  overflow-wrap: break-word;
+  word-break: break-word;
 
-        display: flex;
-        align-items: center;
-        gap: 16px;
-
-        .uc-modular-tile_icon {
-          flex: 0 0 48px;
-          display: flex;
-          justify-content: center;
-          align-items: center;
-        }
-
-        .uc-modular-tile_heading {
-          flex: 1;
-          display: flex;
-          flex-direction: column;
-          justify-content: center;
-
-          h1, h2, h3, h4, p {
-            margin: 0;
-            line-height: 1.4;
-          }
-        }
-      }
-    }
-
-    .divider {
-      border: none;
-      border-top: 1px solid #ccc;
-      margin: 16px 0;
-    }
+  .header_headline {
+    font-family: "Connections Light";
+    font-size: 32px;
+    font-weight: 300;
+    line-height: 1.25;
+    letter-spacing: 0.007px;
+    color: var(--grays-black-100000000, #000);
+    margin: 0;
   }
+
+  .header_subheadline {
+    font-family: "Connections Light";
+    font-size: 18px;
+    font-weight: 300;
+    line-height: 1.5;
+    letter-spacing: 0.011px;
+    color: var(--grays-black-100000000, #000);
+    margin: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}
+
+.hx-icon-interactive-caret-right {
+  flex-shrink: 0;
+  font-size: 1.25rem;
+  color: inherit;
+  margin-left: auto;
+}
+
+.divider {
+  margin: 0.75rem 0;
+  border: none;
+  border-top: 1px solid currentColor;
+  opacity: 0.2;
 }
