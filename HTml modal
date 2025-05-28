@@ -1,14 +1,14 @@
-<!-- Trigger -->
-<div class="change-card-toggle">Change Card</div>
+<div class="change-card-wrapper">
+  <div class="change-card-toggle">Change Card</div>
 
-<!-- Dropdown -->
-<div class="change-card-dropdown">
-  <div class="card-row">
-    <div class="card-thumb">
-      <img src="/path/to/image.jpg" alt="Card Image" />
-    </div>
-    <div class="card-title">
-      <h2>Card Title</h2>
+  <div class="change-card-dropdown">
+    <div class="card-row">
+      <div class="card-thumb">
+        <img src="/path/to/image.jpg" alt="Card Image" />
+      </div>
+      <div class="card-title">
+        <h2>Card Title</h2>
+      </div>
     </div>
   </div>
 </div>
