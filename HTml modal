@@ -1,13 +1,18 @@
-<div class="change-card-wrapper">
-  <div class="change-card-toggle">Change Card</div>
+<!-- SELECTED CARD DISPLAY (DEFAULT) -->
+<div class="card-select-wrapper">
+  <div class="card-select-toggle">
+    <!-- This value comes from the current/default Card XF -->
+    ${currentCard.title}
+  </div>
 
-  <div class="change-card-dropdown">
-    <div class="card-row">
+  <!-- DROPDOWN OF AVAILABLE CARDS FROM CARD XF -->
+  <div class="card-select-dropdown">
+    <div class="card-row" data-sly-list.card="${cardXF.cards}">
       <div class="card-thumb">
-        <img src="/path/to/image.jpg" alt="Card Image" />
+        <img src="${card.image}" alt="${card.title}" />
       </div>
       <div class="card-title">
-        <h2>Card Title</h2>
+        <h2>${card.title}</h2>
       </div>
     </div>
   </div>
