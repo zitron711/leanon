@@ -1,54 +1,44 @@
-.custom-dropdown-wrapper {
-  position: relative;
-  width: 300px;
-  font-family: Arial, sans-serif;
-  margin-top: 20px;
-}
-
-.custom-dropdown-toggle {
-  cursor: pointer;
-  font-weight: bold;
-  color: #005ea2;
-  padding: 10px;
-  background: #f5f5f5;
-  border: 1px solid #ccc;
-  user-select: none;
-}
-
-.custom-dropdown-list {
-  position: absolute;
-  top: 100%;
-  left: 0;
-  z-index: 1000;
-  background: #f5f5f5;
-  border: 1px solid #ccc;
-  display: none;
+.reward-calculator {
   width: 100%;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  max-width: 600px;
+  margin: 20px auto;
+  font-family: Arial, sans-serif;
+  border: 1px solid #ccc;
+  border-collapse: collapse;
 }
 
-.custom-dropdown-list.active {
-  display: block;
-}
-
-.dropdown-option {
+.calc-row {
   display: flex;
-  align-items: center;
-  gap: 10px;
+  border-bottom: 1px solid #ddd;
   padding: 10px;
-  cursor: pointer;
 }
 
-.dropdown-option:hover {
-  background: #e0e0e0;
+.calc-row.header {
+  background-color: #f5f5f5;
+  font-weight: bold;
 }
 
-.option-thumb img {
-  width: 50px;
-  height: auto;
-  display: block;
+.calc-row.total-row {
+  font-weight: bold;
+  background-color: #e0e0e0;
 }
 
-.option-title {
+.col {
   flex: 1;
+  padding: 10px;
+}
+
+.percent-col {
+  width: 20%;
+}
+
+.input-col input {
+  width: 100%;
+  padding: 5px;
+  box-sizing: border-box;
+}
+
+.result-value,
+.total-value {
+  color: #005ea2;
 }
