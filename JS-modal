@@ -7,18 +7,19 @@ document.addEventListener('DOMContentLoaded', function () {
     const closeBtn = comp.querySelector('.modal-close');
     const cardToggle = comp.querySelector('.change-card-toggle');
     const cardDropdown = comp.querySelector('.change-card-dropdown');
+    const selectToggle = comp.querySelector('.card-select-toggle');
+    const selectDropdown = comp.querySelector('.card-select-dropdown');
 
-    // Open modal on trigger click
+    // Modal open
     trigger?.addEventListener('click', () => {
       overlay.classList.add('active');
     });
 
-    // Close modal on close button click
+    // Modal close
     closeBtn?.addEventListener('click', () => {
       overlay.classList.remove('active');
     });
 
-    // Close modal when clicking outside modal box
     overlay?.addEventListener('click', (e) => {
       if (e.target === overlay) {
         overlay.classList.remove('active');
@@ -28,6 +29,11 @@ document.addEventListener('DOMContentLoaded', function () {
     // Toggle "Change Card" dropdown
     cardToggle?.addEventListener('click', () => {
       cardDropdown?.classList.toggle('active');
+    });
+
+    // Toggle Card Select dropdown
+    selectToggle?.addEventListener('click', () => {
+      selectDropdown?.classList.toggle('active');
     });
   });
 });
