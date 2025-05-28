@@ -5,12 +5,42 @@ html
   <div class="modal-overlay">
     <div class="modal-box">
       <span class="modal-close">&times;</span>
+
+      <!-- Header Row -->
+      <div class="modal-header-row">
+        <div class="modal-image">
+          <sly data-sly-resource="${'inheritedImage' @ resourceType='yourproject/components/image'}"></sly>
+        </div>
+        <div class="modal-heading">
+          <sly data-sly-resource="${'inheritedHeading' @ resourceType='yourproject/components/heading'}"></sly>
+        </div>
+      </div>
+
+      <!-- Change Card Toggle -->
+      <div class="change-card-toggle">Change Card</div>
+
+      <!-- Dropdown with cards -->
+      <div class="change-card-dropdown">
+        <sly data-sly-list.card="${resource.getChild('cardXFList')}">
+          <div class="card-row">
+            <div class="card-thumb">
+              <sly data-sly-resource="${card.getChild('image') @ resourceType='yourproject/components/image'}"></sly>
+            </div>
+            <div class="card-title">
+              <sly data-sly-resource="${card.getChild('heading') @ resourceType='yourproject/components/heading'}"></sly>
+            </div>
+          </div>
+        </sly>
+      </div>
+
+      <!-- Main Modal Body -->
       <div class="modal-body">
         ${properties.modalContent}
       </div>
     </div>
   </div>
 </div>
+
 
 
 css
