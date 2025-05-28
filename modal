@@ -1,0 +1,94 @@
+html
+<div class="modal-link" data-cmp="modal-link">
+  <span class="modal-trigger">${properties.clickText}</span>
+
+  <div class="modal-overlay">
+    <div class="modal-box">
+      <span class="modal-close">&times;</span>
+      <div class="modal-body">
+        ${properties.modalContent}
+      </div>
+    </div>
+  </div>
+</div>
+
+
+css
+.modal-link .modal-trigger {
+  cursor: pointer;
+  color: blue;
+  text-decoration: underline;
+}
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  right: 0;
+  height: 100%;
+  width: 100%;
+  background: rgba(0, 0, 0, 0.3); /* semi-transparent backdrop */
+  display: none;
+  z-index: 1000;
+}
+
+.modal-overlay.active {
+  display: block;
+}
+
+.modal-box {
+  position: absolute;
+  top: 0;
+  right: -400px;
+  width: 400px;
+  height: 100%;
+  background: #f2f2f2; /* light grey */
+  transition: right 0.4s ease-in-out;
+  box-shadow: -2px 0 10px rgba(0, 0, 0, 0.2);
+}
+
+.modal-overlay.active .modal-box {
+  right: 0;
+}
+
+.modal-close {
+  font-size: 28px;
+  position: absolute;
+  right: 16px;
+  top: 10px;
+  cursor: pointer;
+}
+
+.modal-body {
+  padding: 20px;
+  margin-top: 40px;
+}
+
+js
+document.addEventListener('DOMContentLoaded', function () {
+  const components = document.querySelectorAll('[data-cmp="modal-link"]');
+
+  components.forEach((comp) => {
+    const trigger = comp.querySelector('.modal-trigger');
+    const overlay = comp.querySelector('.modal-overlay');
+    const closeBtn = comp.querySelector('.modal-close');
+
+    if (trigger && overlay && closeBtn) {
+      trigger.addEventListener('click', () => {
+        overlay.classList.add('active');
+      });
+
+      closeBtn.addEventListener('click', () => {
+        overlay.classList.remove('active');
+      });
+
+      // Optional: clicking outside modal-box closes it
+      overlay.addEventListener('click', (e) => {
+        if (e.target === overlay) {
+          overlay.classList.remove('active');
+        }
+      });
+    }
+  });
+});
+
+
