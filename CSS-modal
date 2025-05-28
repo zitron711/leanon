@@ -1,0 +1,9 @@
+.change-card-dropdown {
+  display: none;
+  background: #f0f0f0;
+  padding: 10px;
+}
+
+.change-card-dropdown.active {
+  display: block;
+}
