@@ -1,9 +1,17 @@
-.change-card-dropdown {
-  display: none;
-  background: #f0f0f0;
-  padding: 10px;
+.card-row {
+  display: flex;             /* Align items in a row */
+  align-items: center;       /* Vertically align items */
+  gap: 10px;                 /* Space between image and text */
+  padding: 10px 0;
+  border-bottom: 1px solid #ddd;
 }
 
-.change-card-dropdown.active {
+.card-thumb img {
+  width: 50px;
+  height: auto;
   display: block;
+}
+
+.card-title {
+  flex: 1;                   /* Take remaining space */
 }
