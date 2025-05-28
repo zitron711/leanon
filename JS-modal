@@ -1,29 +1,96 @@
+// -----------------------------
+// Modal + Dropdown Logic
+// -----------------------------
+document.addEventListener('DOMContentLoaded', function () {
+  const modalTrigger = document.querySelector('.modal-trigger');
+  const modal = document.querySelector('.modal');
+  const modalClose = document.querySelector('.modal-close');
+  const dropdownToggle = document.querySelector('.change-card-toggle');
+  const dropdown = document.querySelector('.change-card-dropdown');
+
+  if (modalTrigger && modal && modalClose) {
+    modalTrigger.addEventListener('click', () => {
+      modal.classList.add('active');
+    });
+
+    modalClose.addEventListener('click', () => {
+      modal.classList.remove('active');
+    });
+  }
+
+  if (dropdownToggle && dropdown) {
+    dropdownToggle.addEventListener('click', () => {
+      dropdown.classList.toggle('active');
+    });
+  }
+});
+
+// -----------------------------
+// Reward Calculator Logic
+// -----------------------------
 document.addEventListener('DOMContentLoaded', function () {
   const inputs = document.querySelectorAll('.spend-input');
-  const resultValues = document.querySelectorAll('.result-value');
-  const totalValue = document.querySelector('.total-value');
+  const resultFields = document.querySelectorAll('.result-value');
+  const totalField = document.querySelector('.total-value');
 
-  function calculateRewards() {
+  function sanitizeInput(val) {
+    return parseFloat(val.replace(/[^0-9.]/g, '')) || 0;
+  }
+
+  function formatCurrency(val) {
+    return `$${val.toFixed(2)}`;
+  }
+
+  function formatInputField(input) {
+    const raw = sanitizeInput(input.value);
+    if (raw) {
+      input.value = `$${raw}`;
+    } else {
+      input.value = '';
+    }
+  }
+
+  function calculateRow(input, resultField) {
+    const percent = parseFloat(input.dataset.percent);
+    const amount = sanitizeInput(input.value);
+    if (!isNaN(amount) && amount > 0) {
+      const yearlySpend = amount * 12;
+      const reward = (percent / 100) * yearlySpend;
+      resultField.textContent = formatCurrency(reward);
+      return reward;
+    } else {
+      resultField.textContent = '--';
+      return null;
+    }
+  }
+
+  function updateAll() {
     let total = 0;
+    let filled = 0;
 
     inputs.forEach((input, index) => {
-      const percent = parseFloat(input.dataset.percent); // 3, 2, 1
-      const value = parseFloat(input.value);
-
-      if (!isNaN(value)) {
-        const yearlySpend = value * 12;
-        const reward = (percent / 100) * yearlySpend;
-        resultValues[index].textContent = `$${reward.toFixed(2)}`;
+      const reward = calculateRow(input, resultFields[index]);
+      if (reward !== null) {
         total += reward;
-      } else {
-        resultValues[index].textContent = '--';
+        filled++;
       }
     });
 
-    totalValue.textContent = `$${total.toFixed(2)}`;
+    if (filled === inputs.length) {
+      totalField.textContent = formatCurrency(total);
+    } else {
+      totalField.textContent = '--';
+    }
   }
 
   inputs.forEach(input => {
-    input.addEventListener('input', calculateRewards);
+    input.addEventListener('input', function () {
+      formatInputField(input);
+      updateAll();
+    });
+
+    input.addEventListener('blur', function () {
+      formatInputField(input);
+    });
   });
 });
