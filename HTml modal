@@ -1,28 +1,31 @@
-<div class="custom-dropdown-wrapper">
-  <!-- Toggle (Default Value) -->
-  <div class="custom-dropdown-toggle">Select a Card</div>
+<div class="reward-calculator">
+  <div class="calc-row header">
+    <div class="col percent-col">Reward %</div>
+    <div class="col input-col">Monthly Spend</div>
+    <div class="col result-col">Yearly Reward</div>
+  </div>
 
-  <!-- Dropdown List -->
-  <div class="custom-dropdown-list">
-    <div class="dropdown-option">
-      <div class="option-thumb">
-        <img src="https://via.placeholder.com/50" alt="Card 1" />
-      </div>
-      <div class="option-title">Card 1 Title</div>
-    </div>
+  <div class="calc-row">
+    <div class="col percent-col">3%</div>
+    <div class="col input-col"><input type="number" class="spend-input" data-percent="3" /></div>
+    <div class="col result-col result-value">--</div>
+  </div>
 
-    <div class="dropdown-option">
-      <div class="option-thumb">
-        <img src="https://via.placeholder.com/50" alt="Card 2" />
-      </div>
-      <div class="option-title">Card 2 Title</div>
-    </div>
+  <div class="calc-row">
+    <div class="col percent-col">2%</div>
+    <div class="col input-col"><input type="number" class="spend-input" data-percent="2" /></div>
+    <div class="col result-col result-value">--</div>
+  </div>
 
-    <div class="dropdown-option">
-      <div class="option-thumb">
-        <img src="https://via.placeholder.com/50" alt="Card 3" />
-      </div>
-      <div class="option-title">Card 3 Title</div>
-    </div>
+  <div class="calc-row">
+    <div class="col percent-col">1%</div>
+    <div class="col input-col"><input type="number" class="spend-input" data-percent="1" /></div>
+    <div class="col result-col result-value">--</div>
+  </div>
+
+  <div class="calc-row total-row">
+    <div class="col percent-col"></div>
+    <div class="col input-col total-label">Total</div>
+    <div class="col result-col total-value">--</div>
   </div>
 </div>
