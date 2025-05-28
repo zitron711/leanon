@@ -1,7 +1,7 @@
-// -----------------------------
-// Modal + Dropdown Logic
-// -----------------------------
 document.addEventListener('DOMContentLoaded', function () {
+  // -----------------------------
+  // Modal & Dropdown Logic
+  // -----------------------------
   const modalTrigger = document.querySelector('.modal-trigger');
   const modal = document.querySelector('.modal');
   const modalClose = document.querySelector('.modal-close');
@@ -23,12 +23,10 @@ document.addEventListener('DOMContentLoaded', function () {
       dropdown.classList.toggle('active');
     });
   }
-});
 
-// -----------------------------
-// Reward Calculator Logic
-// -----------------------------
-document.addEventListener('DOMContentLoaded', function () {
+  // -----------------------------
+  // Reward Calculator Logic
+  // -----------------------------
   const inputs = document.querySelectorAll('.spend-input');
   const resultFields = document.querySelectorAll('.result-value');
   const totalField = document.querySelector('.total-value');
@@ -43,7 +41,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
   function formatInputField(input) {
     const raw = sanitizeInput(input.value);
-    if (raw) {
+    if (raw > 0) {
       input.value = `$${raw}`;
     } else {
       input.value = '';
@@ -53,6 +51,7 @@ document.addEventListener('DOMContentLoaded', function () {
   function calculateRow(input, resultField) {
     const percent = parseFloat(input.dataset.percent);
     const amount = sanitizeInput(input.value);
+
     if (!isNaN(amount) && amount > 0) {
       const yearlySpend = amount * 12;
       const reward = (percent / 100) * yearlySpend;
@@ -83,14 +82,22 @@ document.addEventListener('DOMContentLoaded', function () {
     }
   }
 
-  inputs.forEach(input => {
-    input.addEventListener('input', function () {
-      formatInputField(input);
-      updateAll();
-    });
+  if (inputs.length > 0) {
+    inputs.forEach(input => {
+      input.addEventListener('input', function () {
+        const caretPos = input.selectionStart;
+        const raw = sanitizeInput(input.value);
+        if (!isNaN(raw)) {
+          input.value = `$${raw}`;
+          input.setSelectionRange(caretPos, caretPos);
+        }
+        updateAll();
+      });
 
-    input.addEventListener('blur', function () {
-      formatInputField(input);
+      input.addEventListener('blur', function () {
+        formatInputField(input);
+        updateAll();
+      });
     });
-  });
+  }
 });
