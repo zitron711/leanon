@@ -1,27 +1,29 @@
 document.addEventListener('DOMContentLoaded', function () {
-  const wrapper = document.querySelector('.custom-dropdown-wrapper');
-  const toggle = wrapper.querySelector('.custom-dropdown-toggle');
-  const dropdown = wrapper.querySelector('.custom-dropdown-list');
-  const options = wrapper.querySelectorAll('.dropdown-option');
+  const inputs = document.querySelectorAll('.spend-input');
+  const resultValues = document.querySelectorAll('.result-value');
+  const totalValue = document.querySelector('.total-value');
 
-  // Toggle dropdown
-  toggle.addEventListener('click', () => {
-    dropdown.classList.toggle('active');
-  });
+  function calculateRewards() {
+    let total = 0;
 
-  // Select option
-  options.forEach(option => {
-    option.addEventListener('click', () => {
-      const title = option.querySelector('.option-title').textContent;
-      toggle.textContent = title;
-      dropdown.classList.remove('active');
+    inputs.forEach((input, index) => {
+      const percent = parseFloat(input.dataset.percent); // 3, 2, 1
+      const value = parseFloat(input.value);
+
+      if (!isNaN(value)) {
+        const yearlySpend = value * 12;
+        const reward = (percent / 100) * yearlySpend;
+        resultValues[index].textContent = `$${reward.toFixed(2)}`;
+        total += reward;
+      } else {
+        resultValues[index].textContent = '--';
+      }
     });
-  });
 
-  // Close dropdown when clicking outside
-  document.addEventListener('click', (e) => {
-    if (!wrapper.contains(e.target)) {
-      dropdown.classList.remove('active');
-    }
+    totalValue.textContent = `$${total.toFixed(2)}`;
+  }
+
+  inputs.forEach(input => {
+    input.addEventListener('input', calculateRewards);
   });
 });
