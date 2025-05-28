@@ -1,39 +1,27 @@
 document.addEventListener('DOMContentLoaded', function () {
-  const components = document.querySelectorAll('[data-cmp="modal-link"]');
+  const wrapper = document.querySelector('.custom-dropdown-wrapper');
+  const toggle = wrapper.querySelector('.custom-dropdown-toggle');
+  const dropdown = wrapper.querySelector('.custom-dropdown-list');
+  const options = wrapper.querySelectorAll('.dropdown-option');
 
-  components.forEach((comp) => {
-    const trigger = comp.querySelector('.modal-trigger');
-    const overlay = comp.querySelector('.modal-overlay');
-    const closeBtn = comp.querySelector('.modal-close');
-    const cardToggle = comp.querySelector('.change-card-toggle');
-    const cardDropdown = comp.querySelector('.change-card-dropdown');
-    const selectToggle = comp.querySelector('.card-select-toggle');
-    const selectDropdown = comp.querySelector('.card-select-dropdown');
+  // Toggle dropdown
+  toggle.addEventListener('click', () => {
+    dropdown.classList.toggle('active');
+  });
 
-    // Modal open
-    trigger?.addEventListener('click', () => {
-      overlay.classList.add('active');
+  // Select option
+  options.forEach(option => {
+    option.addEventListener('click', () => {
+      const title = option.querySelector('.option-title').textContent;
+      toggle.textContent = title;
+      dropdown.classList.remove('active');
     });
+  });
 
-    // Modal close
-    closeBtn?.addEventListener('click', () => {
-      overlay.classList.remove('active');
-    });
-
-    overlay?.addEventListener('click', (e) => {
-      if (e.target === overlay) {
-        overlay.classList.remove('active');
-      }
-    });
-
-    // Toggle "Change Card" dropdown
-    cardToggle?.addEventListener('click', () => {
-      cardDropdown?.classList.toggle('active');
-    });
-
-    // Toggle Card Select dropdown
-    selectToggle?.addEventListener('click', () => {
-      selectDropdown?.classList.toggle('active');
-    });
+  // Close dropdown when clicking outside
+  document.addEventListener('click', (e) => {
+    if (!wrapper.contains(e.target)) {
+      dropdown.classList.remove('active');
+    }
   });
 });
