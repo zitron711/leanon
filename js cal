@@ -1,29 +1,29 @@
-// Get all input fields and result display fields
+document.addEventListener('DOMContentLoaded', function () {
   const inputs = document.querySelectorAll('.spend-input');
-  const resultValues = document.querySelectorAll('.result-value');
-  const totalValue = document.querySelector('.total-value');
+  const resultFields = document.querySelectorAll('.result-value');
+  const totalField = document.querySelector('.total-value');
 
-  function calculateRewards() {
+  function calculate() {
     let total = 0;
 
     inputs.forEach((input, index) => {
-      const percent = parseFloat(input.dataset.percent); // from data-percent
-      const value = parseFloat(input.value); // user input
+      const value = parseFloat(input.value);
+      const percent = parseFloat(input.dataset.percent);
 
       if (!isNaN(value)) {
-        const yearlySpend = value * 12; // Convert monthly to yearly
-        const reward = (percent / 100) * yearlySpend; // Reward calculation
-        resultValues[index].textContent = `$${reward.toFixed(2)}`; // Display result
+        const yearly = value * 12;
+        const reward = (percent / 100) * yearly;
+        resultFields[index].textContent = reward.toFixed(2);
         total += reward;
       } else {
-        resultValues[index].textContent = '--';
+        resultFields[index].textContent = '--';
       }
     });
 
-    totalValue.textContent = `$${total.toFixed(2)}`; // Display total
+    totalField.textContent = total > 0 ? total.toFixed(2) : '--';
   }
 
-  // Attach input event listener to each input field
   inputs.forEach(input => {
-    input.addEventListener('input', calculateRewards);
+    input.addEventListener('input', calculate);
   });
+});
