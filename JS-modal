@@ -1,0 +1,33 @@
+document.addEventListener('DOMContentLoaded', function () {
+  const components = document.querySelectorAll('[data-cmp="modal-link"]');
+
+  components.forEach((comp) => {
+    const trigger = comp.querySelector('.modal-trigger');
+    const overlay = comp.querySelector('.modal-overlay');
+    const closeBtn = comp.querySelector('.modal-close');
+    const cardToggle = comp.querySelector('.change-card-toggle');
+    const cardDropdown = comp.querySelector('.change-card-dropdown');
+
+    // Open modal on trigger click
+    trigger?.addEventListener('click', () => {
+      overlay.classList.add('active');
+    });
+
+    // Close modal on close button click
+    closeBtn?.addEventListener('click', () => {
+      overlay.classList.remove('active');
+    });
+
+    // Close modal when clicking outside modal box
+    overlay?.addEventListener('click', (e) => {
+      if (e.target === overlay) {
+        overlay.classList.remove('active');
+      }
+    });
+
+    // Toggle "Change Card" dropdown
+    cardToggle?.addEventListener('click', () => {
+      cardDropdown?.classList.toggle('active');
+    });
+  });
+});
