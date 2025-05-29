@@ -1,14 +1,30 @@
 <script>
   window.addEventListener('DOMContentLoaded', function () {
-    var content = document.getElementById('myContent');
-    var modalBody = document.querySelector('#myModal .modal-body');
+    // Only run this logic in Publish mode (no editor UI)
+    var isAuthorMode = document.body.classList.contains('cq-author');
 
-    if (content && modalBody) {
-      modalBody.appendChild(content); // Move the entire div
+    if (!isAuthorMode) {
+      var mainDiv = document.getElementById('main-div');
+      var modalBody = document.querySelector('#myModal .modal-body');
+
+      if (mainDiv && modalBody) {
+        modalBody.appendChild(mainDiv); // Move the content
+      }
+
+      // Optionally show the modal right away
+      if (window.bootstrap) {
+        var myModal = new bootstrap.Modal(document.getElementById('myModal'));
+        myModal.show();
+      } else if (window.jQuery) {
+        $('#myModal').modal('show');
+      }
     }
-
-    // Optional: Show the modal after moving content
-    var myModal = new bootstrap.Modal(document.getElementById('myModal'));
-    myModal.show();
   });
 </script>
+
+<!-- The component rendered outside the modal -->
+<div id="main-div" class="my-component">
+  <h3 data-sly-test="${!wcmmode.disabled}">Author Mode: Component Visible Here</h3>
+  <h3 data-sly-test="${wcmmode.disabled}">Publish Mode: Content Will Be Moved</h3>
+  <p>This content will move into the modal on publish.</p>
+</div>
