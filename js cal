@@ -1,7 +1,9 @@
 <script>
   window.addEventListener('DOMContentLoaded', function () {
     // Only run this logic in Publish mode (no editor UI)
-    var isAuthorMode = document.body.classList.contains('cq-author');
+    var isAuthorMode =
+    (typeof Granite !== 'undefined' && Granite.author && Granite.author.isActive) ||
+    document.body.classList.contains('cq-author');
 
     if (!isAuthorMode) {
       var mainDiv = document.getElementById('main-div');
@@ -21,6 +23,7 @@
     }
   });
 </script>
+
 
 <!-- The component rendered outside the modal -->
 <div id="main-div" class="my-component">
