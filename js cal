@@ -1,5 +1,14 @@
-backdrop.addEventListener('click', () => {
-  modal.classList.remove('open');
-  backdrop.classList.remove('open');
-  document.body.classList.remove('no-scroll');
-});
+<script>
+  window.addEventListener('DOMContentLoaded', function () {
+    var content = document.getElementById('myContent');
+    var modalBody = document.querySelector('#myModal .modal-body');
+
+    if (content && modalBody) {
+      modalBody.appendChild(content); // Move the entire div
+    }
+
+    // Optional: Show the modal after moving content
+    var myModal = new bootstrap.Modal(document.getElementById('myModal'));
+    myModal.show();
+  });
+</script>
