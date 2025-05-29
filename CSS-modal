@@ -1,44 +1,35 @@
+.calculator-wrapper {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+  max-width: 800px;
+  margin: 0 auto;
+}
+
 .reward-calculator {
-  width: 100%;
-  max-width: 600px;
-  margin: 20px auto;
-  font-family: Arial, sans-serif;
-  border: 1px solid #ccc;
-  border-collapse: collapse;
+  margin-bottom: 20px;
 }
 
-.calc-row {
+.reward-summary-row {
   display: flex;
-  border-bottom: 1px solid #ddd;
-  padding: 10px;
+  justify-content: space-between;
+  gap: 20px;
 }
 
-.calc-row.header {
-  background-color: #f5f5f5;
-  font-weight: bold;
-}
-
-.calc-row.total-row {
-  font-weight: bold;
-  background-color: #e0e0e0;
-}
-
-.col {
+.summary-box {
   flex: 1;
-  padding: 10px;
+  background-color: #f2f2f2;
+  padding: 15px;
+  border-radius: 8px;
+  text-align: center;
 }
 
-.percent-col {
-  width: 20%;
+.summary-label {
+  font-weight: bold;
+  margin-bottom: 5px;
 }
 
-.input-col input {
-  width: 100%;
-  padding: 5px;
-  box-sizing: border-box;
-}
-
-.result-value,
-.total-value {
-  color: #005ea2;
+.summary-value {
+  font-size: 18px;
 }
