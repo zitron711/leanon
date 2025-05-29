@@ -1,31 +1,53 @@
-<div class="reward-calculator">
-  <div class="calc-row header">
-    <div class="col percent-col">Reward %</div>
-    <div class="col input-col">Monthly Spend</div>
-    <div class="col result-col">Yearly Reward</div>
+<div class="calculator-wrapper">
+  <div class="reward-calculator">
+    <div class="calc-row header">
+      <div class="col percent-col">Reward %</div>
+      <div class="col input-col">Monthly Spend</div>
+      <div class="col result-col">Yearly Reward</div>
+    </div>
+
+    <div class="calc-row">
+      <div class="col percent-col">3%</div>
+      <div class="col input-col"><input type="number" class="spend-input" data-percent="3" /></div>
+      <div class="col result-col result-value">NA</div>
+    </div>
+
+    <div class="calc-row">
+      <div class="col percent-col">2%</div>
+      <div class="col input-col"><input type="number" class="spend-input" data-percent="2" /></div>
+      <div class="col result-col result-value">NA</div>
+    </div>
+
+    <div class="calc-row">
+      <div class="col percent-col">1%</div>
+      <div class="col input-col"><input type="number" class="spend-input" data-percent="1" /></div>
+      <div class="col result-col result-value">NA</div>
+    </div>
+
+    <div class="calc-row total-row">
+      <div class="col percent-col"></div>
+      <div class="col input-col total-label">Total</div>
+      <div class="col result-col total-value">NA</div>
+    </div>
   </div>
 
-  <div class="calc-row">
-    <div class="col percent-col">3%</div>
-    <div class="col input-col"><input type="number" class="spend-input" data-percent="3" /></div>
-    <div class="col result-col result-value">--</div>
-  </div>
-
-  <div class="calc-row">
-    <div class="col percent-col">2%</div>
-    <div class="col input-col"><input type="number" class="spend-input" data-percent="2" /></div>
-    <div class="col result-col result-value">--</div>
-  </div>
-
-  <div class="calc-row">
-    <div class="col percent-col">1%</div>
-    <div class="col input-col"><input type="number" class="spend-input" data-percent="1" /></div>
-    <div class="col result-col result-value">--</div>
-  </div>
-
-  <div class="calc-row total-row">
-    <div class="col percent-col"></div>
-    <div class="col input-col total-label">Total</div>
-    <div class="col result-col total-value">--</div>
+  <!-- Summary row inside the same white box -->
+  <div class="reward-summary-row">
+    <div class="summary-box">
+      <div class="summary-label">Total</div>
+      <div class="summary-value" id="total-base">NA</div>
+    </div>
+    <div class="summary-box">
+      <div class="summary-label">125%</div>
+      <div class="summary-value" id="total-125">NA</div>
+    </div>
+    <div class="summary-box">
+      <div class="summary-label">150%</div>
+      <div class="summary-value" id="total-150">NA</div>
+    </div>
+    <div class="summary-box">
+      <div class="summary-label">175%</div>
+      <div class="summary-value" id="total-175">NA</div>
+    </div>
   </div>
 </div>
