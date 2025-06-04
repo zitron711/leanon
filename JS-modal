@@ -1,51 +1,46 @@
-document.addEventListener('DOMContentLoaded', function () {
-  const inputs = document.querySelectorAll('.spend-input');
-  const resultFields = document.querySelectorAll('.result-value');
-  const totalField = document.querySelector('.total-value');
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const toggle = document.querySelector(".change-card-toggle");
+    const dropdown = document.querySelector(".change-card-dropdown");
+    const cardImage = document.querySelector(".selected-card-img img");
+    const cardDetails = document.querySelector(".selected-card-details");
 
-  // Summary box references
-  const totalBase = document.getElementById('total-base');
-  const total125 = document.getElementById('total-125');
-  const total150 = document.getElementById('total-150');
-  const total175 = document.getElementById('total-175');
+    // Toggle dropdown
+    toggle.addEventListener("click", function (e) {
+      dropdown.hidden = !dropdown.hidden;
+      e.stopPropagation();
+    });
 
-  function calculate() {
-    let total = 0;
-    let validInputCount = 0;
-
-    inputs.forEach((input, index) => {
-      const value = parseFloat(input.value);
-      const percent = parseFloat(input.dataset.percent);
-
-      if (!isNaN(value)) {
-        const yearly = value * 12;
-        const reward = (percent / 100) * yearly;
-        resultFields[index].textContent = reward.toFixed(2);
-        total += reward;
-        validInputCount++;
-      } else {
-        resultFields[index].textContent = 'NA';
+    // Close dropdown on outside click
+    document.addEventListener("click", function (e) {
+      if (!dropdown.contains(e.target) && !toggle.contains(e.target)) {
+        dropdown.hidden = true;
       }
     });
 
-    const finalTotal = validInputCount === inputs.length ? total.toFixed(2) : 'NA';
-    totalField.textContent = finalTotal;
+    // Handle card selection
+    document.querySelectorAll(".change-card-dropdown-list").forEach(item => {
+      item.addEventListener("click", function () {
+        const newTitle = this.dataset.title;
+        const newImg = this.dataset.img;
+        const newLeadIn = this.dataset.leadin;
 
-    if (finalTotal !== 'NA') {
-      const totalNum = parseFloat(finalTotal);
-      totalBase.textContent = totalNum.toFixed(2);
-      total125.textContent = (totalNum * 1.25).toFixed(2);
-      total150.textContent = (totalNum * 1.5).toFixed(2);
-      total175.textContent = (totalNum * 1.75).toFixed(2);
-    } else {
-      totalBase.textContent = 'NA';
-      total125.textContent = 'NA';
-      total150.textContent = 'NA';
-      total175.textContent = 'NA';
-    }
-  }
+        // Update selected card
+        if (cardImage) cardImage.src = newImg;
+        if (cardDetails) cardDetails.innerHTML = `
+          <h3 class="selected-card-title">${newTitle}</h3>
+          <p class="selected-card-leadin">${newLeadIn}</p>
+        `;
 
-  inputs.forEach(input => {
-    input.addEventListener('input', calculate);
+        // Move tick
+        document.querySelectorAll(".tick-icon").forEach(t => t.remove());
+        const tick = document.createElement("span");
+        tick.classList.add("tick-icon");
+        tick.textContent = "✔";
+        this.appendChild(tick);
+
+        dropdown.hidden = true;
+      });
+    });
   });
-});
+</script>
