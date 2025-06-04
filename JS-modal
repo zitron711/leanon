@@ -1,46 +1,28 @@
-<script>
-  document.addEventListener("DOMContentLoaded", function () {
-    const toggle = document.querySelector(".change-card-toggle");
-    const dropdown = document.querySelector(".change-card-dropdown");
-    const cardImage = document.querySelector(".selected-card-img img");
-    const cardDetails = document.querySelector(".selected-card-details");
+document.addEventListener('DOMContentLoaded', () => {
+  const dropdownToggle = document.querySelector('.change-card-toggle');
+  const dropdownMenu = document.querySelector('.change-card-dropdown');
+  const dropdownItems = dropdownMenu?.querySelectorAll('.change-card-dropdown-list');
 
-    // Toggle dropdown
-    toggle.addEventListener("click", function (e) {
-      dropdown.hidden = !dropdown.hidden;
-      e.stopPropagation();
-    });
+  // Toggle dropdown on clicking toggle
+  dropdownToggle?.addEventListener('click', () => {
+    dropdownMenu.classList.toggle('active');
+  });
 
-    // Close dropdown on outside click
-    document.addEventListener("click", function (e) {
-      if (!dropdown.contains(e.target) && !toggle.contains(e.target)) {
-        dropdown.hidden = true;
-      }
-    });
+  // Close dropdown when clicking outside toggle & dropdown
+  document.addEventListener('click', (event) => {
+    if (
+      !dropdownToggle?.contains(event.target) &&
+      !dropdownMenu?.contains(event.target)
+    ) {
+      dropdownMenu.classList.remove('active');
+    }
+  });
 
-    // Handle card selection
-    document.querySelectorAll(".change-card-dropdown-list").forEach(item => {
-      item.addEventListener("click", function () {
-        const newTitle = this.dataset.title;
-        const newImg = this.dataset.img;
-        const newLeadIn = this.dataset.leadin;
-
-        // Update selected card
-        if (cardImage) cardImage.src = newImg;
-        if (cardDetails) cardDetails.innerHTML = `
-          <h3 class="selected-card-title">${newTitle}</h3>
-          <p class="selected-card-leadin">${newLeadIn}</p>
-        `;
-
-        // Move tick
-        document.querySelectorAll(".tick-icon").forEach(t => t.remove());
-        const tick = document.createElement("span");
-        tick.classList.add("tick-icon");
-        tick.textContent = "✔";
-        this.appendChild(tick);
-
-        dropdown.hidden = true;
-      });
+  // Close dropdown on selecting an item
+  dropdownItems?.forEach((item) => {
+    item.addEventListener('click', () => {
+      dropdownMenu.classList.remove('active');
+      // Add other logic here to handle selection if needed
     });
   });
-</script>
+});
