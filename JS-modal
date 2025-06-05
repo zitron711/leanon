@@ -1,33 +1,24 @@
-<script>
-  document.addEventListener('DOMContentLoaded', function () {
-    const inputs = document.querySelectorAll('.monthly-spend');
-    const totalCashbackEl = document.getElementById('total-cashback');
+// ==== CALCULATE DONUT REWARDS ====
+function updateDonutRewards() {
+  const totalEl = document.querySelector(".total-value");
+  if (!totalEl) return;
 
-    function updateCashbacks() {
-      let total = 0;
+  const totalText = totalEl.textContent.replace(/[^\d.]/g, ""); // Remove $ or commas
+  const total = parseFloat(totalText);
 
-      inputs.forEach(input => {
-        const row = input.closest('tr');
-        const desc = row.querySelector('.reward-description');
-        const cashbackEl = row.querySelector('.cashback');
+  if (isNaN(total)) return;
 
-        const inputVal = parseFloat(input.value) || 0;
-        const rate = parseFloat(desc.dataset.calculation) || 0;
-        const cashback = inputVal * rate;
+  // Get all donut items
+  const donutItems = document.querySelectorAll(".donut-item");
 
-        cashbackEl.textContent = `$${cashback.toFixed(2)}`;
-        total += cashback;
-      });
+  donutItems.forEach((item) => {
+    const bonusMultiplier = parseFloat(item.getAttribute("data-bonus"));
+    const tier = item.getAttribute("data-tier");
+    const rewardEl = document.getElementById("donut-reward-" + tier);
 
-      totalCashbackEl.textContent = `$${total.toFixed(2)}`;
+    if (!isNaN(bonusMultiplier) && rewardEl) {
+      const reward = total * bonusMultiplier;
+      rewardEl.textContent = "$" + reward.toFixed(2);
     }
-
-    // Run on page load
-    updateCashbacks();
-
-    // Update on user input
-    inputs.forEach(input => {
-      input.addEventListener('input', updateCashbacks);
-    });
   });
-</script>
+}
