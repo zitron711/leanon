@@ -22,10 +22,10 @@
       totalCashbackEl.textContent = `$${total.toFixed(2)}`;
     }
 
-    // Initial run to handle default values
+    // Run on page load
     updateCashbacks();
 
-    // Live update on input
+    // Update on user input
     inputs.forEach(input => {
       input.addEventListener('input', updateCashbacks);
     });
