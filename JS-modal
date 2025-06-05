@@ -1,37 +1,33 @@
-document.addEventListener('DOMContentLoaded', () => {
-  const inputs = document.querySelectorAll('.monthly-spend');
-  const totalCashbackEl = document.getElementById('total-cashback');
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const inputs = document.querySelectorAll('.monthly-spend');
+    const totalCashbackEl = document.getElementById('total-cashback');
 
-  function formatCurrency(amount) {
-    return `$${amount.toFixed(2)}`;
-  }
+    function updateCashbacks() {
+      let total = 0;
 
-  function calculateRowAndTotal() {
-    let total = 0;
+      inputs.forEach(input => {
+        const row = input.closest('tr');
+        const desc = row.querySelector('.reward-description');
+        const cashbackEl = row.querySelector('.cashback');
 
-    inputs.forEach((input) => {
-      const inputValue = parseFloat(input.value) || 0;
-      const row = input.closest('tr');
-      const description = row.querySelector('.reward-description');
-      const multiplier = parseFloat(description?.dataset.calculation) || 0;
-      const cashback = inputValue * multiplier;
+        const inputVal = parseFloat(input.value) || 0;
+        const rate = parseFloat(desc.dataset.calculation) || 0;
+        const cashback = inputVal * rate;
 
-      const cashbackSpan = row.querySelector('.cashback');
-      if (cashbackSpan) {
-        cashbackSpan.textContent = formatCurrency(cashback);
-      }
+        cashbackEl.textContent = `$${cashback.toFixed(2)}`;
+        total += cashback;
+      });
 
-      total += cashback;
-    });
-
-    if (totalCashbackEl) {
-      totalCashbackEl.textContent = formatCurrency(total);
+      totalCashbackEl.textContent = `$${total.toFixed(2)}`;
     }
-  }
 
-  calculateRowAndTotal();
+    // Initial run to handle default values
+    updateCashbacks();
 
-  inputs.forEach(input => {
-    input.addEventListener('input', calculateRowAndTotal);
+    // Live update on input
+    inputs.forEach(input => {
+      input.addEventListener('input', updateCashbacks);
+    });
   });
-});
+</script>
