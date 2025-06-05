@@ -22,3 +22,21 @@ function updateDonutRewards() {
     }
   });
 }
+
+
+
+
+
+
+  document.querySelectorAll(".donut-item").forEach(donut => {
+    const bonus = parseFloat(donut.getAttribute("data-bonus")) || 0;
+    const tier = donut.getAttribute("data-tier")?.replace(/\s+/g, '');
+    const rewardId = `donut-reward-${tier}`;
+    const rewardEl = document.getElementById(rewardId);
+
+    if (rewardEl) {
+      const reward = totalValue * bonus;
+      rewardEl.textContent = reward > 0 ? `$${reward.toFixed(2)}` : "NA";
+    }
+  });
+}
