@@ -26,7 +26,8 @@ function updateDonutRewards() {
 
 
 
-
+const totalCashbackEl = document.getElementById("cashback-total");
+  const totalValue = parseFloat(totalCashbackEl?.textContent.replace("$", "")) || 0;
 
   document.querySelectorAll(".donut-item").forEach(donut => {
     const bonus = parseFloat(donut.getAttribute("data-bonus")) || 0;
