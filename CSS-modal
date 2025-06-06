@@ -1,68 +1,19 @@
 .calculator-table {
   width: 100%;
   border-collapse: separate;
-  border-spacing: 0 20px; /* Adds 20px vertical gap between header and rows */
+  border-spacing: 0 0; /* no row spacing */
+  table-layout: fixed; /* enables proper width control */
 }
 
-/* Optional: clean up the table look */
+/* Column widths and gaps */
 .calculator-table th,
 .calculator-table td {
-  padding: 12px 16px;
   text-align: left;
+  padding-right: 10px; /* adds space between columns */
   vertical-align: top;
 }
 
-/* First column: reward-percent cell */
-.reward-percent {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  gap: 8px; /* gap between title and description */
-}
-
-/* Reward title and description styling */
-.reward-title {
-  font-weight: 600;
-  font-size: 16px;
-  color: #222;
-}
-
-.reward-description {
-  font-size: 14px;
-  color: #666;
-}
-
-/* Input field styling */
-.monthly-spend {
-  width: 100%;
-  padding: 8px 12px;
-  font-size: 14px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-}
-
-/* Cashback cell styling */
-.cashback {
-  font-weight: bold;
-  font-size: 16px;
-  color: #0a4ebf;
-}
-_______________________
-
-.calculator-table {
-  width: 100%;
-  border-collapse: separate;
-  border-spacing: 0; /* No gap between rows */
-  margin-bottom: 20px; /* Add external gap if needed */
-}
-
-/* Add only gap between thead and tbody using margin on tbody wrapper */
-.calculator-div thead {
-  margin-bottom: 20px;
-  display: table-header-group;
-}
-
-/* Column widths */
+/* Column specific widths */
 .calculator-table th:first-child,
 .calculator-table td:first-child {
   width: 75%;
@@ -78,6 +29,11 @@ _______________________
   width: 10%;
 }
 
+/* Thead gap from tbody (use margin on tbody parent if needed) */
+thead tr {
+  border-bottom: 20px solid transparent;
+}
+
 /* First column stacked spans */
 .reward-percent {
   display: flex;
@@ -85,7 +41,7 @@ _______________________
   gap: 8px;
 }
 
-/* Reward title and description */
+/* Reward title and description styling */
 .reward-title {
   font-weight: 600;
   font-size: 16px;
@@ -97,15 +53,30 @@ _______________________
   color: #666;
 }
 
-/* Input field */
+/* ============ INPUT with $ Symbol ============ */
+.input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.currency-symbol {
+  position: absolute;
+  left: 10px;
+  font-size: 14px;
+  color: #444;
+  pointer-events: none;
+}
+
+/* Style for number input */
 .monthly-spend {
   width: 100%;
-  padding: 8px 12px;
+  padding: 8px 8px 8px 22px; /* leave space for $ */
   font-size: 14px;
   border: 1px solid #ccc;
   border-radius: 4px;
 
-  /* Remove number input arrows for Chrome, Safari, Edge */
+  /* Remove number input arrows */
   -moz-appearance: textfield;
 }
 
@@ -115,15 +86,13 @@ _______________________
   margin: 0;
 }
 
-/* Remove arrows in Firefox */
 .monthly-spend[type="number"] {
   -moz-appearance: textfield;
 }
 
-/* Cashback */
+/* Cashback display */
 .cashback {
   font-weight: bold;
   font-size: 16px;
   color: #0a4ebf;
 }
-
