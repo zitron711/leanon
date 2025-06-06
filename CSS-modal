@@ -47,3 +47,83 @@
   font-size: 16px;
   color: #0a4ebf;
 }
+_______________________
+
+.calculator-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0; /* No gap between rows */
+  margin-bottom: 20px; /* Add external gap if needed */
+}
+
+/* Add only gap between thead and tbody using margin on tbody wrapper */
+.calculator-div thead {
+  margin-bottom: 20px;
+  display: table-header-group;
+}
+
+/* Column widths */
+.calculator-table th:first-child,
+.calculator-table td:first-child {
+  width: 75%;
+}
+
+.calculator-table th:nth-child(2),
+.calculator-table td:nth-child(2) {
+  width: 15%;
+}
+
+.calculator-table th:nth-child(3),
+.calculator-table td:nth-child(3) {
+  width: 10%;
+}
+
+/* First column stacked spans */
+.reward-percent {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* Reward title and description */
+.reward-title {
+  font-weight: 600;
+  font-size: 16px;
+  color: #222;
+}
+
+.reward-description {
+  font-size: 14px;
+  color: #666;
+}
+
+/* Input field */
+.monthly-spend {
+  width: 100%;
+  padding: 8px 12px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+
+  /* Remove number input arrows for Chrome, Safari, Edge */
+  -moz-appearance: textfield;
+}
+
+.monthly-spend::-webkit-outer-spin-button,
+.monthly-spend::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Remove arrows in Firefox */
+.monthly-spend[type="number"] {
+  -moz-appearance: textfield;
+}
+
+/* Cashback */
+.cashback {
+  font-weight: bold;
+  font-size: 16px;
+  color: #0a4ebf;
+}
+
