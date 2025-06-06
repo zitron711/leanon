@@ -1,95 +1,58 @@
-.card-calculator-main-div {
+.custom-dropdown-wrapper {
   position: relative;
-  padding: 60px 32px 32px; // top: 60px, left/right: 32px, bottom: optional
+  width: 240px;
+  font-family: Arial, sans-serif;
+}
 
-  .selected-card {
-    display: flex;
-    align-items: flex-start;
-    gap: 24px; // spacing between image and details
+.custom-dropdown-toggle {
+  background-color: #fff;
+  padding: 12px 16px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  cursor: pointer;
+  position: relative;
+  font-weight: 500;
+  font-size: 16px;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.dropdown-arrow {
+  margin-left: 12px;
+  font-size: 12px;
+  pointer-events: none;
+}
+
+.custom-dropdown-list {
+  margin-top: 8px;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  display: none; // toggle with JS
+  max-height: 200px;
+  overflow-y: auto;
+  z-index: 100;
+  position: absolute;
+  width: 100%;
+}
+
+.custom-dropdown-wrapper.open .custom-dropdown-list {
+  display: block;
+}
+
+.custom-dropdown-list-option {
+  padding: 10px 16px;
+  cursor: pointer;
+
+  &:hover {
+    background-color: #f0f0f0;
   }
+}
 
-  .selected-card-img {
-    flex-shrink: 0;
-
-    img {
-      width: 102px;
-      height: 80px;
-      object-fit: contain;
-      display: block;
-    }
-  }
-
-  .selected-card-details {
-    flex: 1;
-
-    .cmp-heading {
-      font-size: 40px;
-      font-weight: 333;
-      line-height: 1.2;
-      margin: 0;
-    }
-  }
-
-  .change-card-wrapper {
-    margin-top: 8px;
-
-    .change-card-toggle {
-      color: #0050b3; // blue color
-      font-size: 16px;
-      font-weight: 500;
-      cursor: pointer;
-    }
-
-    .change-card-dropdown {
-      margin-top: 12px;
-      background: #fff;
-      border: 1px solid #ccc;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-      border-radius: 8px;
-      padding: 12px;
-      display: none;
-
-      &.hidden {
-        display: none;
-      }
-
-      ul {
-        list-style: none;
-        padding: 0;
-        margin: 0;
-
-        li.change-card-dropdown-list {
-          display: flex;
-          align-items: center;
-          gap: 12px;
-          padding: 8px 0;
-
-          .card-thumbnail {
-            width: 40px;
-            height: auto;
-          }
-
-          .change-dropdown-leadin {
-            font-size: 14px;
-            color: #666;
-          }
-
-          .change-dropdown-title {
-            font-size: 16px;
-            font-weight: 500;
-            color: #000;
-          }
-
-          .tick-icon {
-            margin-left: auto;
-            width: 16px;
-            height: 16px;
-            background-image: url('/path/to/tick.svg');
-            background-size: contain;
-            background-repeat: no-repeat;
-          }
-        }
-      }
-    }
-  }
+.custom-dropdown-tier {
+  font-size: 16px;
+  color: #333;
 }
