@@ -1,43 +1,18 @@
-// ==== CALCULATE DONUT REWARDS ====
-function updateDonutRewards() {
-  const totalEl = document.querySelector(".total-value");
-  if (!totalEl) return;
+document.querySelectorAll('.monthly-spend').forEach(input => {
+  const wrapper = input.closest('.input-wrapper');
+  const symbol = wrapper.querySelector('.currency-symbol');
 
-  const totalText = totalEl.textContent.replace(/[^\d.]/g, ""); // Remove $ or commas
-  const total = parseFloat(totalText);
-
-  if (isNaN(total)) return;
-
-  // Get all donut items
-  const donutItems = document.querySelectorAll(".donut-item");
-
-  donutItems.forEach((item) => {
-    const bonusMultiplier = parseFloat(item.getAttribute("data-bonus"));
-    const tier = item.getAttribute("data-tier");
-    const rewardEl = document.getElementById("donut-reward-" + tier);
-
-    if (!isNaN(bonusMultiplier) && rewardEl) {
-      const reward = total * bonusMultiplier;
-      rewardEl.textContent = "$" + reward.toFixed(2);
+  const toggleSymbol = () => {
+    if (input.value.trim() !== "") {
+      symbol.style.display = 'block';
+    } else {
+      symbol.style.display = 'none';
     }
-  });
-}
+  };
 
+  // Initial check
+  toggleSymbol();
 
-
-
-const totalCashbackEl = document.getElementById("cashback-total");
-  const totalValue = parseFloat(totalCashbackEl?.textContent.replace("$", "")) || 0;
-
-  document.querySelectorAll(".donut-item").forEach(donut => {
-    const bonus = parseFloat(donut.getAttribute("data-bonus")) || 0;
-    const tier = donut.getAttribute("data-tier")?.replace(/\s+/g, '');
-    const rewardId = `donut-reward-${tier}`;
-    const rewardEl = document.getElementById(rewardId);
-
-    if (rewardEl) {
-      const reward = totalValue * bonus;
-      rewardEl.textContent = reward > 0 ? `$${reward.toFixed(2)}` : "NA";
-    }
-  });
-}
+  // Bind event
+  input.addEventListener('input', toggleSymbol);
+});
