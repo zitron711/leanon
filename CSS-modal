@@ -1,58 +1,49 @@
-.custom-dropdown-wrapper {
-  position: relative;
-  width: 240px;
-  font-family: Arial, sans-serif;
-}
-
-.custom-dropdown-toggle {
-  background-color: #fff;
-  padding: 12px 16px;
-  border: 1px solid #ccc;
-  border-radius: 6px;
-  cursor: pointer;
-  position: relative;
-  font-weight: 500;
-  font-size: 16px;
-
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.dropdown-arrow {
-  margin-left: 12px;
-  font-size: 12px;
-  pointer-events: none;
-}
-
-.custom-dropdown-list {
-  margin-top: 8px;
-  background-color: #fff;
-  border: 1px solid #ccc;
-  border-radius: 6px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-  display: none; // toggle with JS
-  max-height: 200px;
-  overflow-y: auto;
-  z-index: 100;
-  position: absolute;
+.calculator-table {
   width: 100%;
+  border-collapse: separate;
+  border-spacing: 0 20px; /* Adds 20px vertical gap between header and rows */
 }
 
-.custom-dropdown-wrapper.open .custom-dropdown-list {
-  display: block;
+/* Optional: clean up the table look */
+.calculator-table th,
+.calculator-table td {
+  padding: 12px 16px;
+  text-align: left;
+  vertical-align: top;
 }
 
-.custom-dropdown-list-option {
-  padding: 10px 16px;
-  cursor: pointer;
-
-  &:hover {
-    background-color: #f0f0f0;
-  }
+/* First column: reward-percent cell */
+.reward-percent {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 8px; /* gap between title and description */
 }
 
-.custom-dropdown-tier {
+/* Reward title and description styling */
+.reward-title {
+  font-weight: 600;
   font-size: 16px;
-  color: #333;
+  color: #222;
+}
+
+.reward-description {
+  font-size: 14px;
+  color: #666;
+}
+
+/* Input field styling */
+.monthly-spend {
+  width: 100%;
+  padding: 8px 12px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+/* Cashback cell styling */
+.cashback {
+  font-weight: bold;
+  font-size: 16px;
+  color: #0a4ebf;
 }
