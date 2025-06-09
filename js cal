@@ -1,34 +1,33 @@
 document.addEventListener("DOMContentLoaded", function () {
   const toggle = document.querySelector(".change-card-toggle");
   const dropdown = document.querySelector(".change-card-dropdown");
-  const listItems = document.querySelectorAll(".change-card-dropdown-list");
+  const dropdownItems = document.querySelectorAll(".change-card-dropdown-list");
 
-  // Toggle visibility
+  // Toggle dropdown visibility
   toggle.addEventListener("click", () => {
-    dropdown.classList.toggle("hidden");
+    dropdown.classList.toggle("active");
   });
 
   // Handle item selection
-  listItems.forEach(item => {
+  dropdownItems.forEach(item => {
     item.addEventListener("click", () => {
       const title = item.querySelector(".change-dropdown-title")?.textContent?.trim();
       if (title) {
-        toggle.textContent = title; // update toggle label
+        toggle.textContent = title;
       }
 
-      // Optional: highlight selected item
-      listItems.forEach(i => i.classList.remove("selected"));
+      // Highlight selected item
+      dropdownItems.forEach(i => i.classList.remove("selected"));
       item.classList.add("selected");
 
-      dropdown.classList.add("hidden"); // close dropdown
+      dropdown.classList.remove("active"); // Close dropdown
     });
   });
 
   // Close dropdown on outside click
   document.addEventListener("click", function (event) {
     if (!toggle.contains(event.target) && !dropdown.contains(event.target)) {
-      dropdown.classList.add("hidden");
+      dropdown.classList.remove("active");
     }
   });
 });
-
