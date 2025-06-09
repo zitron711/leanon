@@ -1,20 +1,34 @@
-window.addEventListener('DOMContentLoaded', function () {
-  var mainDiv = document.getElementById('main-div');
-  var modalBody = document.querySelector('#myModal .modal-body');
+document.addEventListener("DOMContentLoaded", function () {
+  const toggle = document.querySelector(".change-card-toggle");
+  const dropdown = document.querySelector(".change-card-dropdown");
+  const listItems = document.querySelectorAll(".change-card-dropdown-list");
 
-  if (mainDiv) {
-    var isAuthorMode = mainDiv.getAttribute('data-author-mode') === 'true';
+  // Toggle visibility
+  toggle.addEventListener("click", () => {
+    dropdown.classList.toggle("hidden");
+  });
 
-    if (!isAuthorMode && modalBody) {
-      modalBody.appendChild(mainDiv); // Move content into modal
-
-      // Show modal if needed
-      if (window.bootstrap) {
-        var myModal = new bootstrap.Modal(document.getElementById('myModal'));
-        myModal.show();
-      } else if (window.jQuery && $('#myModal').modal) {
-        $('#myModal').modal('show');
+  // Handle item selection
+  listItems.forEach(item => {
+    item.addEventListener("click", () => {
+      const title = item.querySelector(".change-dropdown-title")?.textContent?.trim();
+      if (title) {
+        toggle.textContent = title; // update toggle label
       }
+
+      // Optional: highlight selected item
+      listItems.forEach(i => i.classList.remove("selected"));
+      item.classList.add("selected");
+
+      dropdown.classList.add("hidden"); // close dropdown
+    });
+  });
+
+  // Close dropdown on outside click
+  document.addEventListener("click", function (event) {
+    if (!toggle.contains(event.target) && !dropdown.contains(event.target)) {
+      dropdown.classList.add("hidden");
     }
-  }
+  });
 });
+
