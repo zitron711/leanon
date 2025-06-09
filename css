@@ -1,28 +1,13 @@
-<div class="calculator-container" data-sly-use.model="com.myproject.core.models.CalculatorModel">
-    <table class="calculator-table">
-        <thead>
-            <tr>
-                <th>Reward %</th>
-                <th>Monthly Spend ($)</th>
-                <th>Cashback per Year ($)</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr data-sly-list.row="${model.rows}">
-                <td class="reward-percent">
-                    <span class="reward" data-reward="${row.rewardPercentage}">${row.rewardPercentage}%</span>
-                </td>
-                <td>
-                    <input 
-                        type="number" 
-                        class="monthly-spend" 
-                        placeholder="Enter amount" 
-                        data-index="${rowList.index}" />
-                </td>
-                <td>
-                    <span class="cashback" id="cashback-${rowList.index}">$0.00</span>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-</div>
+.change-card-dropdown.hidden {
+  display: none;
+}
+
+.change-card-dropdown.active {
+  display: block;
+  position: absolute;
+  background: white;
+  z-index: 999;
+  width: 100%; /* Optional: full width */
+  border: 1px solid #ccc;
+  padding: 10px;
+}
