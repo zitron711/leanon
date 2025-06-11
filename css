@@ -1,24 +1,31 @@
 @media (max-width: 768px) {
   .modal-overlay {
-    max-width: 100%;
+    width: calc(100% - 10px); /* Leave 10px space on left */
+    left: 10px;
+    right: 0;
     transform: translateX(100%);
     padding: 0;
+    max-width: unset;
   }
 
   .modal-box {
     width: 100%;
     height: 100%;
-    right: -100%;
+    right: 0;
     border-radius: 0;
+    display: flex;
+    flex-direction: column;
   }
 
-  .modal-overlay.active .modal-box {
-    right: 0;
+  .modal-overlay.active {
+    transform: translateX(0);
   }
 
   .modal-body {
-    padding: 16px;
+    padding: 20px; /* Add 20px space inside modal */
+    flex: 1; /* Makes content fill modal if needed */
     margin-top: 40px;
+    overflow-y: auto;
   }
 
   .modal-close {
