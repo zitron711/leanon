@@ -1,98 +1,44 @@
-.calculator-table {
-  width: 100%;
-  border-collapse: separate;
-  border-spacing: 0 0; /* no row spacing */
-  table-layout: fixed; /* enables proper width control */
-}
+.modal-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 999;
+    display: none;
+  }
 
-/* Column widths and gaps */
-.calculator-table th,
-.calculator-table td {
-  text-align: left;
-  padding-right: 10px; /* adds space between columns */
-  vertical-align: top;
-}
+  .modal-overlay {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 400px;
+    background: white;
+    box-shadow: -2px 0 10px rgba(0, 0, 0, 0.3);
+    z-index: 1000;
+    max-height: 100vh;
+    overflow-y: auto;
+    transform: translateX(100%);
+    transition: transform 0.3s ease;
+  }
 
-/* Column specific widths */
-.calculator-table th:first-child,
-.calculator-table td:first-child {
-  width: 75%;
-}
+  .modal-box {
+    padding: 20px;
+  }
 
-.calculator-table th:nth-child(2),
-.calculator-table td:nth-child(2) {
-  width: 15%;
-}
+  .modal-overlay.active {
+    transform: translateX(0);
+  }
 
-.calculator-table th:nth-child(3),
-.calculator-table td:nth-child(3) {
-  width: 10%;
-}
+  .modal-backdrop.active {
+    display: block;
+  }
 
-/* Thead gap from tbody (use margin on tbody parent if needed) */
-thead tr {
-  border-bottom: 20px solid transparent;
-}
-
-/* First column stacked spans */
-.reward-percent {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-/* Reward title and description styling */
-.reward-title {
-  font-weight: 600;
-  font-size: 16px;
-  color: #222;
-}
-
-.reward-description {
-  font-size: 14px;
-  color: #666;
-}
-
-/* ============ INPUT with $ Symbol ============ */
-.input-wrapper {
-  position: relative;
-  display: flex;
-  align-items: center;
-}
-
-.currency-symbol {
-  position: absolute;
-  left: 10px;
-  font-size: 14px;
-  color: #444;
-  pointer-events: none;
-}
-
-/* Style for number input */
-.monthly-spend {
-  width: 100%;
-  padding: 8px 8px 8px 22px; /* leave space for $ */
-  font-size: 14px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-
-  /* Remove number input arrows */
-  -moz-appearance: textfield;
-}
-
-.monthly-spend::-webkit-outer-spin-button,
-.monthly-spend::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
-}
-
-.monthly-spend[type="number"] {
-  -moz-appearance: textfield;
-}
-
-/* Cashback display */
-.cashback {
-  font-weight: bold;
-  font-size: 16px;
-  color: #0a4ebf;
-}
+  .modal-close {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    font-size: 24px;
+    cursor: pointer;
+  }
