@@ -1,28 +1,16 @@
 private moveToModal(): void {
-  // Wait until modal is present if not found immediately
-  const checkAndMove = () => {
-    const modalBody = document.querySelector('#calculator-modal .modal-body');
-    const isAuthorMode = this.component.getAttribute('data-author-mode') === 'true';
+  const modalBody = document.querySelector('#calculator-modal .modal-body');
+  const isAuthorMode = this.component.getAttribute('data-author-mode') === 'true';
 
-    if (isAuthorMode && modalBody && !modalBody.contains(this.component)) {
-      modalBody.appendChild(this.component);
-    }
-  };
-
-  if (!document.querySelector('#calculator-modal .modal-body')) {
-    // If modal might load later (common in AEM), wait a bit
-    const observer = new MutationObserver((mutations, obs) => {
-      if (document.querySelector('#calculator-modal .modal-body')) {
-        checkAndMove();
-        obs.disconnect();
-      }
-    });
-
-    observer.observe(document.body, {
-      childList: true,
-      subtree: true,
-    });
+  if (isAuthorMode && modalBody && !modalBody.contains(this.component)) {
+    modalBody.appendChild(this.component);
+    console.log('✅ Calculator moved to modal');
   } else {
-    checkAndMove();
+    console.log('ℹ️ Skipped moving calculator:', {
+      isAuthorMode,
+      modalExists: !!modalBody,
+      componentFound: !!this.component,
+      alreadyInModal: modalBody?.contains(this.component)
+    });
   }
 }
