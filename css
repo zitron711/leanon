@@ -1,6 +1,8 @@
 document.addEventListener('DOMContentLoaded', () => {
   const component = document.getElementById('card-calculator-main');
-  if (component) {
+  const isAuthorMode = component?.getAttribute('data-author-mode') === 'true';
+
+  if (component && !isAuthorMode) {
     cardCalculator({ component });
   }
 });
