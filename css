@@ -1,8 +1,35 @@
-document.addEventListener('DOMContentLoaded', () => {
-  const component = document.getElementById('card-calculator-main');
-  const isAuthorMode = component?.getAttribute('data-author-mode') === 'true';
+// 👇 Your calculator function and class should already be defined above
 
-  if (component && !isAuthorMode) {
-    cardCalculator({ component });
-  }
-});
+// ✅ Move calculator only when NOT in author mode
+function initializeCardCalculatorOnLoad(): void {
+  document.addEventListener('DOMContentLoaded', () => {
+    const component = document.getElementById('card-calculator-main');
+
+    if (!component) {
+      console.warn('❌ Calculator component not found.');
+      return;
+    }
+
+    const isAuthorMode = component.getAttribute('data-author-mode') === 'true';
+    const modalBody = document.querySelector('#calculator-modal .modal-body');
+
+    console.log({ isAuthorMode, modalBodyExists: !!modalBody });
+
+    // ❌ Skip in author
+    if (isAuthorMode) {
+      console.log('🛑 In author mode. Not moving calculator.');
+      return;
+    }
+
+    if (modalBody && !modalBody.contains(component)) {
+      modalBody.appendChild(component);
+      console.log('✅ Calculator moved into modal.');
+      cardCalculator({ component });
+    } else {
+      console.warn('❌ Modal not found or already contains the calculator.');
+    }
+  });
+}
+
+// 👇 Auto-run it
+initializeCardCalculatorOnLoad();
