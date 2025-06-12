@@ -1,16 +1,6 @@
-private moveToModal(): void {
-  const modalBody = document.querySelector('#calculator-modal .modal-body');
-  const isAuthorMode = this.component.getAttribute('data-author-mode') === 'true';
-
-  if (isAuthorMode && modalBody && !modalBody.contains(this.component)) {
-    modalBody.appendChild(this.component);
-    console.log('✅ Calculator moved to modal');
-  } else {
-    console.log('ℹ️ Skipped moving calculator:', {
-      isAuthorMode,
-      modalExists: !!modalBody,
-      componentFound: !!this.component,
-      alreadyInModal: modalBody?.contains(this.component)
-    });
+document.addEventListener('DOMContentLoaded', () => {
+  const component = document.getElementById('card-calculator-main');
+  if (component) {
+    cardCalculator({ component });
   }
-}
+});
