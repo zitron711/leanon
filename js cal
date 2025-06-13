@@ -1,27 +1,45 @@
-function setupModalBehavior(resetFields: () => void): void {
-  const trigger = document.querySelector('.modal-trigger') as HTMLElement | null;
-  const overlay = document.querySelector('.modal-overlay') as HTMLElement | null;
-  const closeBtn = document.querySelector('.modal-close') as HTMLElement | null;
-  const backdrop = document.querySelector('.modal-backdrop') as HTMLElement | null;
+private setupCustomDropdown(): void {
+  const customToggle = document.querySelector('.custom-dropdown-toggle') as HTMLElement | null;
+  const customDropdown = document.querySelector('.custom-dropdown-list') as HTMLElement | null;
+  const customDropdownItems = customDropdown?.querySelectorAll('.custom-dropdown-list-option') ?? [];
 
-  // Open modal on trigger click
-  trigger?.addEventListener('click', () => {
-    overlay?.classList.add('active');
-    backdrop?.classList.add('active');
+  if (!customToggle || !customDropdown) return;
+
+  // Toggle dropdown on click
+  customToggle.addEventListener('click', (e) => {
+    e.stopPropagation(); // prevent bubbling
+    customDropdown.classList.toggle('active');
   });
 
-  // Close modal on close button click
-  closeBtn?.addEventListener('click', () => {
-    resetFields();
-    overlay?.classList.remove('active');
-    backdrop?.classList.remove('active');
+  // Handle item selection
+  customDropdownItems.forEach((item) => {
+    item.addEventListener('click', () => {
+      const title = item.querySelector('.custom-dropdown-title')?.textContent?.trim();
+      const tierName = item.querySelector('.custom-dropdown-tier')?.textContent?.trim();
+
+      if (title) {
+        customToggle.textContent = tierName || title;
+
+        customDropdownItems.forEach((i) => i.classList.remove('selected'));
+        item.classList.add('selected');
+
+        customDropdown.classList.remove('active');
+
+        // Optional: trigger visual update
+        this.redBox();
+      }
+    });
   });
 
-  // Close modal when clicking on backdrop
-  backdrop?.addEventListener('click', () => {
-    resetFields();
-    overlay?.classList.remove('active');
-    backdrop?.classList.remove('active');
+  // Close dropdown when clicking outside
+  document.addEventListener('click', (e) => {
+    if (!customToggle.contains(e.target as Node) && !customDropdown.contains(e.target as Node)) {
+      customDropdown.classList.remove('active');
+    }
   });
 }
-setupModalBehavior(() => this.resetFields());
+
+
+this.setupCustomDropdown(); 
+
+
