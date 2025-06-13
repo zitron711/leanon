@@ -1,13 +1,5 @@
+/* === MOBILE STYLES === */
 @media (max-width: 767px) {
-  .calculator-container {
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
-    padding: 1rem;
-    width: 100%;
-    overflow-x: auto; /* Enable scroll if content overflows */
-  }
-
   .calculator-header-row,
   .calculator-summary-row {
     display: none;
@@ -17,27 +9,17 @@
     display: flex;
     flex-direction: column;
     gap: 0.75rem;
-    padding-bottom: 1rem;
-    border-bottom: 1px solid #ccc;
   }
 
   .reward-cell {
     text-align: left;
-    font-weight: 600;
-    font-size: 1rem;
   }
 
-  .reward-description {
-    font-size: 0.875rem;
-    color: #555;
-    margin-top: 0.25rem;
-  }
-
-  .input-output-row {
+  .input-mobile {
     display: flex;
     justify-content: space-between;
     gap: 1rem;
-    flex-wrap: wrap;
+    overflow-x: auto;
   }
 
   .input-cell,
@@ -45,41 +27,11 @@
     flex: 1;
   }
 
-  .input-cell::before {
-    content: "Monthly Spend";
-    display: block;
-    font-weight: 600;
-    font-size: 0.85rem;
-    margin-bottom: 0.25rem;
-  }
-
-  .cashback-cell::before {
-    content: "Cashback";
-    display: block;
-    font-weight: 600;
-    font-size: 0.85rem;
-    margin-bottom: 0.25rem;
-  }
-
   .input-wrapper {
-    display: flex;
-    align-items: center;
-    border: 1px solid #ccc;
-    padding: 0.4rem 0.6rem;
-    border-radius: 4px;
-    background: #fff;
     width: 100%;
   }
 
-  .currency-symbol {
-    margin-right: 0.4rem;
-    color: #444;
-  }
-
-  .cashback {
-    display: inline-block;
-    font-weight: 600;
-    font-size: 1rem;
-    color: #000;
+  .cashback-cell {
+    text-align: left;
   }
 }
