@@ -1,82 +1,4 @@
-/* ========= DESKTOP FIRST ========= */
-.calculator-container {
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
-  padding: 1rem;
-}
-
-.calculator-header-row,
-.calculator-summary-row {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  font-weight: bold;
-  font-size: 0.95rem;
-  padding-bottom: 0.75rem;
-  border-bottom: 2px solid #000;
-}
-
-.calculator-row {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  gap: 1rem;
-  align-items: center;
-  border-bottom: 1px solid #ddd;
-  padding-bottom: 1rem;
-}
-
-/* Reward section */
-.reward-cell {
-  font-weight: 600;
-  font-size: 1rem;
-}
-
-.reward-description {
-  display: block;
-  font-size: 0.875rem;
-  color: #777;
-  margin-top: 0.25rem;
-}
-
-/* Input wrapper */
-.input-wrapper {
-  display: flex;
-  align-items: center;
-  border: 1px solid #ccc;
-  padding: 0.4rem 0.6rem;
-  border-radius: 4px;
-  background: #fff;
-  width: 100%;
-  max-width: 250px;
-}
-
-.currency-symbol {
-  margin-right: 0.4rem;
-  color: #444;
-}
-
-/* Cashback */
-.cashback-cell {
-  font-weight: 600;
-  font-size: 1rem;
-  color: #000;
-  justify-self: end;
-}
-
-/* Summary row styles */
-.calculator-summary-row .total-title {
-  justify-self: start;
-  font-weight: 600;
-  font-size: 1rem;
-}
-
-.calculator-summary-row .total-value {
-  justify-self: end;
-  font-size: 1.1rem;
-  font-weight: bold;
-}
-
-/* ========= MOBILE OVERRIDES ========= */
+/* ===== MOBILE VIEW ===== */
 @media (max-width: 767px) {
   .calculator-header-row,
   .calculator-summary-row {
@@ -87,21 +9,21 @@
     display: flex;
     flex-direction: column;
     gap: 0.75rem;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 1rem;
   }
 
   .reward-cell {
-    font-weight: 600;
-    font-size: 1rem;
+    text-align: left;
   }
 
   .reward-description {
-    font-weight: normal;
     font-size: 0.875rem;
     color: #555;
     margin-top: 0.25rem;
   }
 
-  /* Add heading labels via ::before */
+  /* Show labels before input and cashback */
   .input-cell::before,
   .cashback-cell::before {
     display: block;
@@ -119,22 +41,25 @@
     content: "Cashback";
   }
 
-  /* Align input and cashback side-by-side */
+  /* Make input and cashback side-by-side */
   .input-cell,
   .cashback-cell {
     width: 100%;
   }
 
-  .input-wrapper {
-    width: 100%;
+  .input-cell,
+  .cashback-cell {
+    display: inline-block;
+    vertical-align: top;
+    width: 48%;
   }
 
-  .calculator-row > .input-cell,
-  .calculator-row > .cashback-cell {
-    display: inline-block;
-    width: 48%;
-    box-sizing: border-box;
-    vertical-align: top;
+  .input-cell {
+    margin-right: 4%;
+  }
+
+  .input-wrapper {
+    width: 100%;
   }
 
   .cashback-cell {
