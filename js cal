@@ -1,37 +1,9 @@
-document.addEventListener("DOMContentLoaded", () => {
-  const toggle = document.querySelector(".selected-cards-toggle");
-  const dropdown = document.querySelector(".selected-cards-dropdown");
-  const items = document.querySelectorAll(".selected-cards-dropdown-list");
+document.addEventListener('DOMContentLoaded', () => {
+  const component = document.getElementById('card-calculator-main');
+  const modalBody = document.querySelector('#calculator-modal .modal-body');
 
-  if (!toggle || !dropdown) return;
-
-  // Toggle dropdown visibility on click
-  toggle.addEventListener("click", () => {
-    dropdown.classList.toggle("active");
-    dropdown.classList.toggle("hidden");
-  });
-
-  // Handle item selection
-  items.forEach(item => {
-    item.addEventListener("click", () => {
-      const title = item.querySelector(".selected-cards-dropdown-title").textContent.trim();
-      toggle.textContent = title;
-
-      // Highlight selected item
-      items.forEach(i => i.classList.remove("selected"));
-      item.classList.add("selected");
-
-      // Close dropdown
-      dropdown.classList.add("hidden");
-      dropdown.classList.remove("active");
-    });
-  });
-
-  // Close dropdown if clicked outside
-  document.addEventListener("click", (e) => {
-    if (!toggle.contains(e.target) && !dropdown.contains(e.target)) {
-      dropdown.classList.add("hidden");
-      dropdown.classList.remove("active");
-    }
-  });
+  if (component && modalBody) {
+    modalBody.appendChild(component);
+    cardCalculator({ component });
+  }
 });
