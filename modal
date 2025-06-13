@@ -1,24 +1,24 @@
-// Handle item selection
-customDropdownItems.forEach(item => {
-  item.addEventListener("click", () => {
-    const tierName = item.querySelector(".custom-dropdown-tier")?.textContent?.trim();
+ customDropdownItems.forEach((item) => {
+    item.addEventListener("click", () => {
+      const tierSpan = item.querySelector(".custom-dropdown-tier") as HTMLElement | null;
+      const tierName = tierSpan?.textContent?.trim();
 
-    if (tierName) {
-      // Step 1: Remove red box using the current toggle text
-      removeRedBox(customToggle.textContent.trim());
+      if (tierName && customToggle.textContent) {
+        // Step 1: Remove red box using the current toggle text
+        removeRedBox(customToggle.textContent.trim());
 
-      // Step 2: Update the toggle text
-      customToggle.textContent = tierName;
+        // Step 2: Update the toggle text
+        customToggle.textContent = tierName;
 
-      // Step 3: Highlight selection
-      customDropdownItems.forEach(i => i.classList.remove("selected"));
-      item.classList.add("selected");
+        // Step 3: Highlight selected item
+        customDropdownItems.forEach(i => i.classList.remove("selected"));
+        item.classList.add("selected");
 
-      // Step 4: Close dropdown
-      customDropdown.classList.remove("active");
+        // Step 4: Close dropdown
+        customDropdown.classList.remove("active");
 
-      // Step 5: Call red box again with the new selection
-      redBox(tierName);
-    }
+        // Step 5: Call red box with new selection
+        redBox(tierName);
+      }
+    });
   });
-});
