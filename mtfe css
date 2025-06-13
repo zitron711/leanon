@@ -1,42 +1,24 @@
-/* ===== MOBILE-FIRST BASE STYLES ===== */
-.calculator-row {
-  display: flex;
-  flex-direction: column;
-  padding: 1rem 0;
-  border-bottom: 1px solid #ddd;
-}
-
-/* First column = heading (reward cell) */
-.reward-cell {
-  font-size: 1rem;
-  font-weight: bold;
-  color: #000;
-  text-align: left;
-  margin-bottom: 0.25rem;
-}
-
-.reward-description {
-  font-size: 0.875rem;
-  font-weight: normal;
-  color: #555;
-  margin-top: 0.25rem;
-}
-
-/* ===== DESKTOP OVERRIDE ===== */
-@media (min-width: 768px) {
+@media (max-width: 767px) {
   .calculator-row {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    align-items: center;
+    display: flex;
+    flex-direction: column;
+    padding: 1rem 0;
+    border-bottom: 1px solid #ddd;
+    width: 100%;
   }
 
   .reward-cell {
     font-size: 1rem;
     font-weight: bold;
-    margin: 0;
+    color: #000;
+    text-align: left;
+    margin-bottom: 0.25rem;
   }
 
   .reward-description {
+    font-size: 0.875rem;
+    font-weight: normal;
+    color: #555;
     margin-top: 0.25rem;
   }
 }
