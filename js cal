@@ -24,3 +24,4 @@ function setupModalBehavior(resetFields: () => void): void {
     backdrop?.classList.remove('active');
   });
 }
+setupModalBehavior(() => this.resetFields());
