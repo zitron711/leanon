@@ -1,127 +1,24 @@
-html
-<div class="modal-link" data-cmp="modal-link">
-  <span class="modal-trigger">${properties.clickText}</span>
+// Handle item selection
+customDropdownItems.forEach(item => {
+  item.addEventListener("click", () => {
+    const tierName = item.querySelector(".custom-dropdown-tier")?.textContent?.trim();
 
-  <div class="modal-overlay">
-    <div class="modal-box">
-      <span class="modal-close">&times;</span>
+    if (tierName) {
+      // Step 1: Remove red box using the current toggle text
+      removeRedBox(customToggle.textContent.trim());
 
-      <!-- Header Row -->
-      <div class="modal-header-row">
-        <div class="modal-image">
-          <sly data-sly-resource="${'inheritedImage' @ resourceType='yourproject/components/image'}"></sly>
-        </div>
-        <div class="modal-heading">
-          <sly data-sly-resource="${'inheritedHeading' @ resourceType='yourproject/components/heading'}"></sly>
-        </div>
-      </div>
+      // Step 2: Update the toggle text
+      customToggle.textContent = tierName;
 
-      <!-- Change Card Toggle -->
-      <div class="change-card-toggle">Change Card</div>
+      // Step 3: Highlight selection
+      customDropdownItems.forEach(i => i.classList.remove("selected"));
+      item.classList.add("selected");
 
-      <!-- Dropdown with cards -->
-      <div class="change-card-dropdown">
-        <sly data-sly-list.card="${resource.getChild('cardXFList')}">
-          <div class="card-row">
-            <div class="card-thumb">
-              <sly data-sly-resource="${card.getChild('image') @ resourceType='yourproject/components/image'}"></sly>
-            </div>
-            <div class="card-title">
-              <sly data-sly-resource="${card.getChild('heading') @ resourceType='yourproject/components/heading'}"></sly>
-            </div>
-          </div>
-        </sly>
-      </div>
+      // Step 4: Close dropdown
+      customDropdown.classList.remove("active");
 
-      <!-- Main Modal Body -->
-      <div class="modal-body">
-        ${properties.modalContent}
-      </div>
-    </div>
-  </div>
-</div>
-
-
-
-css
-.modal-link .modal-trigger {
-  cursor: pointer;
-  color: blue;
-  text-decoration: underline;
-}
-
-.modal-overlay {
-  position: fixed;
-  top: 0;
-  right: 0;
-  height: 100%;
-  width: 100%;
-  background: rgba(0, 0, 0, 0.3); /* semi-transparent backdrop */
-  display: none;
-  z-index: 1000;
-}
-
-.modal-overlay.active {
-  display: block;
-}
-
-.modal-box {
-  position: absolute;
-  top: 0;
-  right: -400px;
-  width: 400px;
-  height: 100%;
-  background: #f2f2f2; /* light grey */
-  transition: right 0.4s ease-in-out;
-  box-shadow: -2px 0 10px rgba(0, 0, 0, 0.2);
-}
-
-.modal-overlay.active .modal-box {
-  right: 0;
-}
-
-.modal-close {
-  font-size: 28px;
-  position: absolute;
-  right: 16px;
-  top: 10px;
-  cursor: pointer;
-}
-
-.modal-body {
-  padding: 20px;
-  margin-top: 40px;
-}
-
-js
-document.addEventListener('DOMContentLoaded', function () {
-  const components = document.querySelectorAll('[data-cmp="modal-link"]');
-
-  components.forEach((comp) => {
-    const trigger = comp.querySelector('.modal-trigger');
-    const overlay = comp.querySelector('.modal-overlay');
-    const closeBtn = comp.querySelector('.modal-close');
-    const cardToggle = comp.querySelector('.change-card-toggle');
-    const cardDropdown = comp.querySelector('.change-card-dropdown');
-
-    trigger?.addEventListener('click', () => {
-      overlay.classList.add('active');
-    });
-
-    closeBtn?.addEventListener('click', () => {
-      overlay.classList.remove('active');
-    });
-
-    overlay?.addEventListener('click', (e) => {
-      if (e.target === overlay) overlay.classList.remove('active');
-    });
-
-    // Change card dropdown toggle
-    cardToggle?.addEventListener('click', () => {
-      cardDropdown.classList.toggle('active');
-    });
+      // Step 5: Call red box again with the new selection
+      redBox(tierName);
+    }
   });
 });
-
-
-
