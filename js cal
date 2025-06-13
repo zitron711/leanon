@@ -1,9 +1,26 @@
-document.addEventListener('DOMContentLoaded', () => {
-  const component = document.getElementById('card-calculator-main');
-  const modalBody = document.querySelector('#calculator-modal .modal-body');
+function setupModalBehavior(resetFields: () => void): void {
+  const trigger = document.querySelector('.modal-trigger') as HTMLElement | null;
+  const overlay = document.querySelector('.modal-overlay') as HTMLElement | null;
+  const closeBtn = document.querySelector('.modal-close') as HTMLElement | null;
+  const backdrop = document.querySelector('.modal-backdrop') as HTMLElement | null;
 
-  if (component && modalBody) {
-    modalBody.appendChild(component);
-    cardCalculator({ component });
-  }
-});
+  // Open modal on trigger click
+  trigger?.addEventListener('click', () => {
+    overlay?.classList.add('active');
+    backdrop?.classList.add('active');
+  });
+
+  // Close modal on close button click
+  closeBtn?.addEventListener('click', () => {
+    resetFields();
+    overlay?.classList.remove('active');
+    backdrop?.classList.remove('active');
+  });
+
+  // Close modal when clicking on backdrop
+  backdrop?.addEventListener('click', () => {
+    resetFields();
+    overlay?.classList.remove('active');
+    backdrop?.classList.remove('active');
+  });
+}
