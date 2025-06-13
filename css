@@ -1,9 +1,7 @@
-// 👇 Your calculator function and class should already be defined above
-
-// ✅ Move calculator only when NOT in author mode
 function initializeCardCalculatorOnLoad(): void {
   document.addEventListener('DOMContentLoaded', () => {
     const component = document.getElementById('card-calculator-main');
+    const modalBody = document.querySelector('#calculator-modal .modal-body');
 
     if (!component) {
       console.warn('❌ Calculator component not found.');
@@ -11,13 +9,15 @@ function initializeCardCalculatorOnLoad(): void {
     }
 
     const isAuthorMode = component.getAttribute('data-author-mode') === 'true';
-    const modalBody = document.querySelector('#calculator-modal .modal-body');
 
-    console.log({ isAuthorMode, modalBodyExists: !!modalBody });
+    console.log({
+      isAuthorMode,
+      modalBodyExists: !!modalBody,
+      calculatorAlreadyMoved: modalBody?.contains(component),
+    });
 
-    // ❌ Skip in author
     if (isAuthorMode) {
-      console.log('🛑 In author mode. Not moving calculator.');
+      console.log('🛑 In author mode — skipping move.');
       return;
     }
 
@@ -26,10 +26,9 @@ function initializeCardCalculatorOnLoad(): void {
       console.log('✅ Calculator moved into modal.');
       cardCalculator({ component });
     } else {
-      console.warn('❌ Modal not found or already contains the calculator.');
+      console.warn('⚠️ Modal not found or calculator already inside.');
     }
   });
 }
 
-// 👇 Auto-run it
 initializeCardCalculatorOnLoad();
