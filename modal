@@ -1,61 +1,12 @@
-@media (max-width: 767px) {
-  .calculator-header-row,
-  .calculator-summary-row {
-    display: none;
-  }
+data-monthly-label="Monthly Spend" data-cashback-label="Cashback"
 
-  .calculator-row {
-    display: flex;
-    flex-direction: column;
-    gap: 0.75rem;
-    padding: 1rem 0;
-    border-bottom: 1px solid #ccc;
-  }
 
-  .reward-cell {
-    text-align: left;
-  }
-
-  .reward-cell .reward-title {
+.input-mobile::before {
+    content: attr(data-monthly-label) "   " attr(data-cashback-label);
+    grid-column: span 2;
+    display: block;
     font-weight: 600;
-    font-size: 1rem;
+    font-size: 0.85rem;
+    color: #333;
+    margin-bottom: 0.25rem;
   }
-
-  .reward-description {
-    font-size: 0.875rem;
-    color: #555;
-    margin-top: 0.25rem;
-  }
-
-  .input-mobile {
-    display: flex;
-    justify-content: space-between;
-    gap: 1rem;
-    overflow-x: auto; /* allow scrolling if space is tight */
-  }
-
-  .input-cell,
-  .cashback-cell {
-    flex: 1;
-  }
-
-  .input-wrapper {
-    display: flex;
-    align-items: center;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    padding: 0.5rem;
-    background: #fff;
-    width: 100%;
-  }
-
-  .currency-symbol {
-    margin-right: 0.5rem;
-    color: #444;
-  }
-
-  .cashback {
-    font-weight: bold;
-    font-size: 1rem;
-  }
-}
