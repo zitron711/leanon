@@ -1,34 +1,47 @@
-function initializeCardCalculatorOnLoad(): void {
-  document.addEventListener('DOMContentLoaded', () => {
-    const component = document.getElementById('card-calculator-main');
-    const modalBody = document.querySelector('#calculator-modal .modal-body');
+private setupCustomDropdown(): void {
+  const customToggle = document.querySelector('.custom-dropdown-toggle') as HTMLElement | null;
+  const customDropdown = document.querySelector('.custom-dropdown-list') as HTMLElement | null;
+  const customDropdownItems = customDropdown?.querySelectorAll('.custom-dropdown-list-option') ?? [];
 
-    if (!component) {
-      console.warn('❌ Calculator component not found.');
-      return;
-    }
+  if (!customToggle || !customDropdown) return;
 
-    const isAuthorMode = component.getAttribute('data-author-mode') === 'true';
+  // Toggle dropdown visibility
+  customToggle.addEventListener('click', (e) => {
+    e.stopPropagation();
+    customDropdown.classList.toggle('active');
+  });
 
-    console.log({
-      isAuthorMode,
-      modalBodyExists: !!modalBody,
-      calculatorAlreadyMoved: modalBody?.contains(component),
+  // Handle option selection
+  customDropdownItems.forEach((item) => {
+    item.addEventListener('click', (e) => {
+      e.stopPropagation();
+
+      const title = item.querySelector('.custom-dropdown-title')?.textContent?.trim();
+      const tierName = item.querySelector('.custom-dropdown-tier')?.textContent?.trim();
+
+      if (title) {
+        customToggle.textContent = tierName || title;
+
+        // Highlight selection
+        customDropdownItems.forEach((i) => i.classList.remove('selected'));
+        item.classList.add('selected');
+
+        // Close dropdown
+        customDropdown.classList.remove('active');
+
+        // ✅ Always trigger red box update
+        this.redBox();
+      }
     });
+  });
 
-    if (isAuthorMode) {
-      console.log('🛑 In author mode — skipping move.');
-      return;
-    }
-
-    if (modalBody && !modalBody.contains(component)) {
-      modalBody.appendChild(component);
-      console.log('✅ Calculator moved into modal.');
-      cardCalculator({ component });
-    } else {
-      console.warn('⚠️ Modal not found or calculator already inside.');
+  // Close dropdown if clicked outside
+  document.addEventListener('click', (e) => {
+    if (
+      !customToggle.contains(e.target as Node) &&
+      !customDropdown.contains(e.target as Node)
+    ) {
+      customDropdown.classList.remove('active');
     }
   });
 }
-
-initializeCardCalculatorOnLoad();
