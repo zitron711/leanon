@@ -1,24 +1,85 @@
- customDropdownItems.forEach((item) => {
-    item.addEventListener("click", () => {
-      const tierSpan = item.querySelector(".custom-dropdown-tier") as HTMLElement | null;
-      const tierName = tierSpan?.textContent?.trim();
+@media (max-width: 767px) {
+  .calculator-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    padding: 1rem;
+    width: 100%;
+    overflow-x: auto; /* Enable scroll if content overflows */
+  }
 
-      if (tierName && customToggle.textContent) {
-        // Step 1: Remove red box using the current toggle text
-        removeRedBox(customToggle.textContent.trim());
+  .calculator-header-row,
+  .calculator-summary-row {
+    display: none;
+  }
 
-        // Step 2: Update the toggle text
-        customToggle.textContent = tierName;
+  .calculator-row {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid #ccc;
+  }
 
-        // Step 3: Highlight selected item
-        customDropdownItems.forEach(i => i.classList.remove("selected"));
-        item.classList.add("selected");
+  .reward-cell {
+    text-align: left;
+    font-weight: 600;
+    font-size: 1rem;
+  }
 
-        // Step 4: Close dropdown
-        customDropdown.classList.remove("active");
+  .reward-description {
+    font-size: 0.875rem;
+    color: #555;
+    margin-top: 0.25rem;
+  }
 
-        // Step 5: Call red box with new selection
-        redBox(tierName);
-      }
-    });
-  });
+  .input-output-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .input-cell,
+  .cashback-cell {
+    flex: 1;
+  }
+
+  .input-cell::before {
+    content: "Monthly Spend";
+    display: block;
+    font-weight: 600;
+    font-size: 0.85rem;
+    margin-bottom: 0.25rem;
+  }
+
+  .cashback-cell::before {
+    content: "Cashback";
+    display: block;
+    font-weight: 600;
+    font-size: 0.85rem;
+    margin-bottom: 0.25rem;
+  }
+
+  .input-wrapper {
+    display: flex;
+    align-items: center;
+    border: 1px solid #ccc;
+    padding: 0.4rem 0.6rem;
+    border-radius: 4px;
+    background: #fff;
+    width: 100%;
+  }
+
+  .currency-symbol {
+    margin-right: 0.4rem;
+    color: #444;
+  }
+
+  .cashback {
+    display: inline-block;
+    font-weight: 600;
+    font-size: 1rem;
+    color: #000;
+  }
+}
