@@ -1,29 +1,49 @@
-<div class="calculator-row">
-  <div class="reward-cell">
-    <span class="reward-title">${item.rewardsTitle}</span>
-    <span class="reward-description" data-calculation="${item.calculation}">${item.description}</span>
-  </div>
+type RewardItem = {
+  tier: string;
+  reward: string;
+  description: string;
+};
 
-  <!-- Add this block -->
-  <div class="input-labels">
-    <div>${model.spendColumnHeader}</div>
-    <div>${model.cashBackColumnHeader}</div>
-  </div>
+type RewardMap = {
+  [key: string]: RewardItem[];
+};
 
-  <div class="input-row">
-    <div class="input-cell">
-      <div class="input-wrapper">
-        <span class="currency-symbol">$</span>
-        <input type="number"
-               class="monthly-spend"
-               data-calculation="${item.calculation}"
-               placeholder="${model.spendInput1NullValue}"
-               aria-label="${model.spendInput1AriaLabel}"
-               value="${model.spendInput1}" />
-      </div>
-    </div>
-    <div class="cashback-cell">
-      <span class="cashback">$0.00</span>
-    </div>
-  </div>
-</div>
+// Simulated JSON response (replace this with `const jsonData = await fetch(...)`)
+const jsonData: RewardMap = {
+  anshul: [
+    { tier: "platinum", reward: "1000 Points", description: "Earn more on every purchase!" },
+    { tier: "gold", reward: "500 Points", description: "Moderate rewards." }
+  ],
+  anshul2: [
+    { tier: "silver", reward: "200 Points", description: "Basic rewards." },
+    { tier: "bronze", reward: "100 Points", description: "Entry-level rewards." }
+  ]
+};
+
+function updateRewardsFromJSON(data: RewardMap): void {
+  Object.keys(data).forEach(groupKey => {
+    const rewardList = data[groupKey];
+
+    rewardList.forEach(rewardItem => {
+      const { tier, reward, description } = rewardItem;
+
+      // Update reward value by ID
+      const rewardEl = document.getElementById(`donut-reward-${tier}`);
+      if (rewardEl) {
+        rewardEl.textContent = reward;
+      }
+
+      // Optional: update description if available
+      const descEl = document.querySelector(`.reward-description-${tier}`);
+      if (descEl) {
+        descEl.textContent = description;
+      }
+
+      // Optional: highlight group
+      const groupWrapper = document.querySelector(`[data-reward-group="${groupKey}"]`);
+      if (groupWrapper) {
+        groupWrapper.classList.add('updated');
+      }
+    });
+  });
+}
