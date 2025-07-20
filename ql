@@ -1,45 +1,22 @@
-document.addEventListener("DOMContentLoaded", function () {
-    const copyBtn = document.getElementById("copy-link-btn");
-    const successMsg = document.getElementById("copy-success-msg");
+.copy-link-btn {
+    cursor: pointer;
+    padding: 8px 16px;
+    background-color: #007ac8;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 14px;
+}
 
-    if (!copyBtn) return;
+.copy-success-msg {
+    display: none;
+    margin-left: 10px;
+    color: green;
+    font-size: 14px;
+}
 
-    copyBtn.addEventListener("click", function () {
-        const pageURL = window.location.href;
-
-        if (navigator.clipboard && window.isSecureContext) {
-            navigator.clipboard.writeText(pageURL)
-                .then(() => showSuccess())
-                .catch(() => fallbackCopy(pageURL));
-        } else {
-            fallbackCopy(pageURL);
-        }
-
-        function fallbackCopy(text) {
-            const textarea = document.createElement("textarea");
-            textarea.value = text;
-            textarea.style.position = "fixed";
-            document.body.appendChild(textarea);
-            textarea.focus();
-            textarea.select();
-
-            try {
-                document.execCommand("copy");
-                showSuccess();
-            } catch (err) {
-                alert("Failed to copy link");
-            }
-
-            document.body.removeChild(textarea);
-        }
-
-        function showSuccess() {
-            if (successMsg) {
-                successMsg.style.display = "inline";
-                setTimeout(() => {
-                    successMsg.style.display = "none";
-                }, 2000);
-            }
-        }
-    });
-});
+@media (max-width: 768px) {
+    .copy-link-btn {
+        display: none;
+    }
+}
