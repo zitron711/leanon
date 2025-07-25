@@ -1,141 +1,122 @@
-<div id="sticky-banner"
-     class="sticky-banner hidden"
-     data-position="${properties.bannerPosition}"
+<sly data-sly-use.template="global_core/components/flagship/commons/templates.html"
+     data-sly-call="${template.helper}" />
+
+<sly data-sly-use.banner="com.baml.aem.core.models.flagship.ProductStickyBanner"
+     data-sly-set.color="sticky-banner--${banner.bannerColor || 'cool-gray'}"
+     data-sly-set.editVisible="${wcmmode.edit ? 'is-visible' : ''}" />
+
+<div id="${banner.componentId}"
+     class="sticky-banner sticky-banner--product ${color} ${editVisible}"
+     data-sticky-position="${banner.alwaysSticky}"  <!-- use this instead of sticky attribute -->
+     data-mobile-variation="${banner.mobileVariation}"
+     data-action="${wcmmode.edit ? '' : 'sticky-banner-component'}"
      role="region"
-     aria-label="Important Notice"
-     aria-live="polite"
-     tabindex="-1">
-  <div class="sticky-banner__content">
-    <p>This is an important announcement.</p>
-    <button type="button" class="dismiss-banner-btn" aria-label="Dismiss banner">✕</button>
-  </div>
+     aria-label="Sticky promotional banner">
+
+    <sly data-sly-test="${banner.variationCard == 'default'}">
+        <div class="psb_sticky-banner_content" tabindex="0">
+            <div data-sly-resource="#{'icon' @ resourceType='global_core/components/flagship/content/elements/icon'}"></div>
+            <div class="psb_sticky_banner_content_image__psb"
+                 data-sly-resource="#{'image' @ resourceType='global_core/components/flagship/content/elements/image'}"></div>
+            <div class="psb_sticky_banner_content_text_psb"
+                 data-sly-resource="#{'text' @ resourceType='global_core/components/flagship/content/elements/text'}"></div>
+            <div class="psb_sticky_banner_content_button_cta_psb">
+                <div class="psb_sticky_banner_content_button_psb"
+                     data-sly-resource="#{'button' @ resourceType='global_core/components/flagship/content/unity-flagship/unity-button'}">
+                </div>
+            </div>
+        </div>
+    </sly>
 </div>
 
 <style>
 .sticky-banner {
   position: fixed;
+  width: 100vw;
+  max-width: 100%;
   left: 0;
-  right: 0;
-  width: auto;
-  padding: 1rem;
-  background: black;
-  color: white;
-  transform: translateY(-100%);
-  transition: transform 0.3s ease;
-  z-index: 9999;
-}
+  z-index: 1000;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+  background-color: #fff;
 
-.sticky-banner.visible {
-  transform: translateY(0);
-}
+  &[data-sticky-position="top"] {
+    top: 0;
+  }
 
-.sticky-banner[data-position="top"] {
-  top: 0;
-}
+  &[data-sticky-position="bottom"] {
+    bottom: 0;
+  }
 
-.sticky-banner[data-position="default"] {
-  top: 0;
-}
+  &.is-hidden {
+    transform: translateY(-100%);
+    opacity: 0;
+    pointer-events: none;
+  }
 
-.sticky-banner[data-position="bottom"] {
-  bottom: 0;
-  top: auto;
-  transform: translateY(100%);
-}
+  &[data-sticky-position="bottom"].is-hidden {
+    transform: translateY(100%);
+  }
 
-.sticky-banner[data-position="bottom"].visible {
-  transform: translateY(0);
-}
-
-.sticky-banner.at-footer {
-  position: absolute;
-  bottom: 100px; /* adjust depending on your footer height */
+  // Ensure content is edge-to-edge
+  .psb_sticky-banner_content {
+    margin: 0 auto;
+    padding: 1rem;
+    max-width: 1600px;
+    width: 100%;
+    box-sizing: border-box;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+  }
 }
 
 </style>
 
 <script>
 (function () {
-  const banner = document.getElementById('sticky-banner');
-  const dismissBtn = banner.querySelector('.dismiss-banner-btn');
-  const position = banner.dataset.position || 'default';
-  let lastScrollTop = 0;
-  let dismissed = false;
+  const banners = document.querySelectorAll('.sticky-banner');
 
-  function showBanner() {
-    if (!dismissed) banner.classList.add('visible');
-  }
+  banners.forEach(banner => {
+    const position = banner.getAttribute('data-sticky-position');
+    let lastScrollY = window.scrollY;
 
-  function hideBanner() {
-    banner.classList.remove('visible');
-  }
+    const handleScroll = () => {
+      const currentY = window.scrollY;
 
-  // Handle dismiss
-  dismissBtn.addEventListener('click', () => {
-    dismissed = true;
-    hideBanner();
-  });
+      if (position === 'top') {
+        if (currentY > 50) {
+          banner.classList.remove('is-hidden');
+        } else {
+          banner.classList.add('is-hidden');
+        }
+      }
 
-  function onScrollDefault(scrollY) {
-    if (scrollY <= 0) {
-      hideBanner();
-    } else if (scrollY > lastScrollTop) {
-      showBanner();
-    } else {
-      hideBanner();
-    }
-  }
+      else if (position === 'default') {
+        if (currentY > 100) {
+          banner.classList.remove('is-hidden');
+        } else {
+          banner.classList.add('is-hidden');
+        }
+      }
 
-  function onScrollTop(scrollY) {
-    if (scrollY <= 0) {
-      hideBanner();
-    } else {
-      showBanner();
-    }
-  }
+      else if (position === 'bottom') {
+        if (currentY < lastScrollY) {
+          banner.classList.remove('is-hidden');
+        } else {
+          banner.classList.add('is-hidden');
+        }
+      }
 
-  function onScrollBottom(scrollY) {
-    const footer = document.querySelector('footer');
-    const footerRect = footer?.getBoundingClientRect();
-    const bottomVisible = footerRect && footerRect.top < window.innerHeight;
+      lastScrollY = currentY;
+    };
 
-    if (scrollY <= 0) {
-      hideBanner();
-      return;
-    }
+    // Start hidden
+    banner.classList.add('is-hidden');
 
-    if (scrollY < lastScrollTop) {
-      // Scrolling up
-      showBanner();
-    } else {
-      // Scrolling down
-      hideBanner();
-    }
-
-    if (bottomVisible) {
-      banner.classList.add('at-footer');
-    } else {
-      banner.classList.remove('at-footer');
-    }
-  }
-
-  // Main scroll listener
-  window.addEventListener('scroll', function () {
-    const scrollY = window.scrollY || window.pageYOffset;
-
-    switch (position) {
-      case 'top':
-        onScrollTop(scrollY);
-        break;
-      case 'bottom':
-        onScrollBottom(scrollY);
-        break;
-      default:
-        onScrollDefault(scrollY);
-    }
-
-    lastScrollTop = Math.max(scrollY, 0);
+    window.addEventListener('scroll', handleScroll);
   });
 })();
+
 
 </script>
