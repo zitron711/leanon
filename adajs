@@ -13,7 +13,7 @@ private setupCustomDropdown(): void {
 
   if (!wrapper) return;
 
-  // Set ARIA roles/attributes
+  // Set ARIA attributes
   wrapper.setAttribute("role", "combobox");
   wrapper.setAttribute("aria-haspopup", "listbox");
   wrapper.setAttribute("aria-expanded", "false");
@@ -29,108 +29,106 @@ private setupCustomDropdown(): void {
     option.setAttribute("tabindex", "-1");
   });
 
-  // Helper: open/close dropdown
-  const toggleDropdown = (open: boolean) => {
+  const toggleDropdown = (open: boolean): void => {
     wrapper.setAttribute("aria-expanded", String(open));
     dropdown.hidden = !open;
 
     toggle.classList.toggle("hx-icon-interactive-caret-up", open);
     toggle.classList.toggle("hx-icon-interactive-caret-down", !open);
 
-    if (open && options.length > 0) {
-      options[0].focus();
+    if (open) {
+      const selected = options.find((opt) =>
+        opt.classList.contains("uc-icon-action-checkmark")
+      );
+      (selected ?? options[0]).focus();
     }
   };
 
-  // Update selected state on click
+  // Handle option click
   options.forEach((option) => {
     option.addEventListener("click", () => {
-      const tierSpan = option.querySelector<HTMLElement>(
+      const span = option.querySelector<HTMLElement>(
         `.${this.calculatorID}-custom-dropdown-tier`
       );
-      const tierName = tierSpan?.textContent?.trim();
+      const tierName = span?.textContent?.trim() || "";
 
-      if (tierName) {
-        options.forEach((opt) =>
-          opt.classList.remove("uc-icon-action-checkmark")
-        );
-        option.classList.add("uc-icon-action-checkmark");
+      options.forEach((opt) => opt.classList.remove("uc-icon-action-checkmark"));
+      option.classList.add("uc-icon-action-checkmark");
 
-        toggle.textContent = tierName;
-        dropdown.hidden = true;
-        wrapper.setAttribute("aria-expanded", "false");
+      toggle.textContent = tierName;
+      toggle.focus();
+      toggleDropdown(false);
 
-        // Your functions
-        this.removeRedbox(toggle.textContent?.trim().toLowerCase() || '');
-        this.redBox();
-
-        toggle.focus();
-      }
+      this.removeRedbox(tierName.toLowerCase());
+      this.redBox();
     });
 
-    option.addEventListener("keydown", (e: KeyboardEvent) => {
-      const currentIndex = options.indexOf(option);
-      if (e.key === "ArrowDown") {
-        e.preventDefault();
-        const next = options[(currentIndex + 1) % options.length];
+    // Keyboard navigation on options
+    option.addEventListener("keydown", (event: KeyboardEvent) => {
+      const index = options.indexOf(option);
+      if (event.key === "ArrowDown") {
+        event.preventDefault();
+        const next = options[(index + 1) % options.length];
         next?.focus();
-      } else if (e.key === "ArrowUp") {
-        e.preventDefault();
-        const prev = options[(currentIndex - 1 + options.length) % options.length];
+      } else if (event.key === "ArrowUp") {
+        event.preventDefault();
+        const prev = options[(index - 1 + options.length) % options.length];
         prev?.focus();
-      } else if (e.key === "Enter" || e.key === " ") {
-        e.preventDefault();
+      } else if (event.key === "Enter" || event.key === " ") {
+        event.preventDefault();
         option.click();
-      } else if (e.key === "Escape") {
+      } else if (event.key === "Escape") {
+        event.preventDefault();
         toggleDropdown(false);
         wrapper.focus();
       }
     });
   });
 
-  // Toggle on click
-  toggle.addEventListener("click", (e) => {
-    e.stopPropagation();
+  // Toggle dropdown on toggle click
+  toggle.addEventListener("click", (event: MouseEvent) => {
+    event.stopPropagation();
     const isOpen = wrapper.getAttribute("aria-expanded") === "true";
     toggleDropdown(!isOpen);
   });
 
-  // Toggle on keydown (Enter, Space, Arrow)
-  wrapper.addEventListener("keydown", (e: KeyboardEvent) => {
+  // Toggle dropdown on keypress on wrapper
+  wrapper.addEventListener("keydown", (event: KeyboardEvent) => {
     const isOpen = wrapper.getAttribute("aria-expanded") === "true";
-    switch (e.key) {
+
+    switch (event.key) {
       case "Enter":
       case " ":
-        e.preventDefault();
+        event.preventDefault();
         toggleDropdown(!isOpen);
         break;
       case "ArrowDown":
-        e.preventDefault();
-        if (!isOpen) toggleDropdown(true);
-        else options[0]?.focus();
+        event.preventDefault();
+        toggleDropdown(true);
+        options[0]?.focus();
         break;
       case "Escape":
-        e.preventDefault();
+        event.preventDefault();
         toggleDropdown(false);
         break;
     }
   });
 
-  // Close when clicked outside
-  document.addEventListener("click", (e) => {
-    if (!wrapper.contains(e.target as Node)) {
+  // Close dropdown when clicking outside
+  document.addEventListener("click", (event: MouseEvent) => {
+    if (!wrapper.contains(event.target as Node)) {
       toggleDropdown(false);
     }
   });
 
-  // Mark default selected tier on load
-  const selectedTier = toggle.textContent?.trim().toLowerCase();
+  // Mark selected tier on load
+  const selectedText = toggle.textContent?.trim().toLowerCase();
   options.forEach((option) => {
-    const tierSpan = option.querySelector<HTMLElement>(
+    const span = option.querySelector<HTMLElement>(
       `.${this.calculatorID}-custom-dropdown-tier`
     );
-    const tierText = tierSpan?.textContent?.trim().toLowerCase();
-    if (tierText === selectedTier) {
+    const text = span?.textContent?.trim().toLowerCase();
+    if (text === selectedText) {
       option.classList.add("uc-icon-action-checkmark");
     } else {
       option.classList.remove("uc-icon-action-checkmark");
