@@ -1,44 +1,141 @@
-.modal-backdrop {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    background: rgba(0, 0, 0, 0.5);
-    z-index: 999;
-    display: none;
+<div id="sticky-banner"
+     class="sticky-banner hidden"
+     data-position="${properties.bannerPosition}"
+     role="region"
+     aria-label="Important Notice"
+     aria-live="polite"
+     tabindex="-1">
+  <div class="sticky-banner__content">
+    <p>This is an important announcement.</p>
+    <button type="button" class="dismiss-banner-btn" aria-label="Dismiss banner">✕</button>
+  </div>
+</div>
+
+<style>
+.sticky-banner {
+  position: fixed;
+  left: 0;
+  right: 0;
+  width: auto;
+  padding: 1rem;
+  background: black;
+  color: white;
+  transform: translateY(-100%);
+  transition: transform 0.3s ease;
+  z-index: 9999;
+}
+
+.sticky-banner.visible {
+  transform: translateY(0);
+}
+
+.sticky-banner[data-position="top"] {
+  top: 0;
+}
+
+.sticky-banner[data-position="default"] {
+  top: 0;
+}
+
+.sticky-banner[data-position="bottom"] {
+  bottom: 0;
+  top: auto;
+  transform: translateY(100%);
+}
+
+.sticky-banner[data-position="bottom"].visible {
+  transform: translateY(0);
+}
+
+.sticky-banner.at-footer {
+  position: absolute;
+  bottom: 100px; /* adjust depending on your footer height */
+}
+
+</style>
+
+<script>
+(function () {
+  const banner = document.getElementById('sticky-banner');
+  const dismissBtn = banner.querySelector('.dismiss-banner-btn');
+  const position = banner.dataset.position || 'default';
+  let lastScrollTop = 0;
+  let dismissed = false;
+
+  function showBanner() {
+    if (!dismissed) banner.classList.add('visible');
   }
 
-  .modal-overlay {
-    position: fixed;
-    top: 0;
-    right: 0;
-    width: 400px;
-    background: white;
-    box-shadow: -2px 0 10px rgba(0, 0, 0, 0.3);
-    z-index: 1000;
-    max-height: 100vh;
-    overflow-y: auto;
-    transform: translateX(100%);
-    transition: transform 0.3s ease;
+  function hideBanner() {
+    banner.classList.remove('visible');
   }
 
-  .modal-box {
-    padding: 20px;
+  // Handle dismiss
+  dismissBtn.addEventListener('click', () => {
+    dismissed = true;
+    hideBanner();
+  });
+
+  function onScrollDefault(scrollY) {
+    if (scrollY <= 0) {
+      hideBanner();
+    } else if (scrollY > lastScrollTop) {
+      showBanner();
+    } else {
+      hideBanner();
+    }
   }
 
-  .modal-overlay.active {
-    transform: translateX(0);
+  function onScrollTop(scrollY) {
+    if (scrollY <= 0) {
+      hideBanner();
+    } else {
+      showBanner();
+    }
   }
 
-  .modal-backdrop.active {
-    display: block;
+  function onScrollBottom(scrollY) {
+    const footer = document.querySelector('footer');
+    const footerRect = footer?.getBoundingClientRect();
+    const bottomVisible = footerRect && footerRect.top < window.innerHeight;
+
+    if (scrollY <= 0) {
+      hideBanner();
+      return;
+    }
+
+    if (scrollY < lastScrollTop) {
+      // Scrolling up
+      showBanner();
+    } else {
+      // Scrolling down
+      hideBanner();
+    }
+
+    if (bottomVisible) {
+      banner.classList.add('at-footer');
+    } else {
+      banner.classList.remove('at-footer');
+    }
   }
 
-  .modal-close {
-    position: absolute;
-    top: 16px;
-    right: 16px;
-    font-size: 24px;
-    cursor: pointer;
-  }
+  // Main scroll listener
+  window.addEventListener('scroll', function () {
+    const scrollY = window.scrollY || window.pageYOffset;
+
+    switch (position) {
+      case 'top':
+        onScrollTop(scrollY);
+        break;
+      case 'bottom':
+        onScrollBottom(scrollY);
+        break;
+      default:
+        onScrollDefault(scrollY);
+    }
+
+    lastScrollTop = Math.max(scrollY, 0);
+  });
+})();
+
+</script>
