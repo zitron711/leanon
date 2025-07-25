@@ -1,149 +1,139 @@
 private setupCustomDropdown(): void {
-  let customToggle = document.querySelector(
-    `.${this.calculatorID ?? ''}-custom-dropdown-toggle`
-  ) as HTMLElement | null;
+  const toggleSelector = `.${this.calculatorID}-custom-dropdown-toggle`;
+  const dropdownSelector = `.${this.calculatorID}-custom-dropdown-list`;
+  const optionSelector = `.${this.calculatorID}-custom-dropdown-list-option`;
 
-  const customDropdown = document.querySelector(
-    `.${this.calculatorID ?? ''}-custom-dropdown-list`
-  ) as HTMLElement | null;
+  const toggle = document.querySelector<HTMLElement>(toggleSelector);
+  const dropdown = document.querySelector<HTMLElement>(dropdownSelector);
 
-  if (!customToggle || !customDropdown) return;
+  if (!toggle || !dropdown) return;
 
-  const wrapper = customToggle.closest('.custom-dropdown-wrapper') as HTMLElement;
-  const allOptions = customDropdown.querySelectorAll(
-    `.${this.calculatorID ?? ''}-custom-dropdown-list-option`
-  );
+  const wrapper = toggle.closest<HTMLElement>(`.${this.calculatorID}-custom-dropdown-wrapper`);
+  const options = Array.from(dropdown.querySelectorAll<HTMLElement>(optionSelector));
 
-  // Set ARIA
-  wrapper.setAttribute('role', 'combobox');
-  wrapper.setAttribute('aria-haspopup', 'listbox');
-  wrapper.setAttribute('aria-expanded', 'false');
-  wrapper.setAttribute('aria-controls', `${this.calculatorID}-dropdown-list`);
-  wrapper.setAttribute('tabindex', '0');
+  if (!wrapper) return;
 
-  customDropdown.setAttribute('role', 'listbox');
-  customDropdown.setAttribute('id', `${this.calculatorID}-dropdown-list`);
-  customDropdown.setAttribute('hidden', 'true');
+  // Set ARIA roles/attributes
+  wrapper.setAttribute("role", "combobox");
+  wrapper.setAttribute("aria-haspopup", "listbox");
+  wrapper.setAttribute("aria-expanded", "false");
+  wrapper.setAttribute("aria-controls", `${this.calculatorID}-dropdown-list`);
+  wrapper.setAttribute("tabindex", "0");
 
-  allOptions.forEach((option) => {
-    option.setAttribute('role', 'option');
-    option.setAttribute('tabindex', '-1');
+  dropdown.setAttribute("role", "listbox");
+  dropdown.setAttribute("id", `${this.calculatorID}-dropdown-list`);
+  dropdown.hidden = true;
+
+  options.forEach((option) => {
+    option.setAttribute("role", "option");
+    option.setAttribute("tabindex", "-1");
   });
 
-  // Highlight selected tier (on load)
-  const selectedTier = customToggle.textContent?.trim().toLowerCase() ?? '';
-  allOptions.forEach((option) => {
-    const tierSpan = option.querySelector(
-      `.${this.calculatorID ?? ''}-custom-dropdown-tier`
-    );
-    if (tierSpan?.textContent?.trim().toLowerCase() === selectedTier) {
-      option.classList.add('uc-icon-action-checkmark');
-    } else {
-      option.classList.remove('uc-icon-action-checkmark');
-    }
-  });
-
-  // Replace toggle to remove prior events
-  const newToggle = customToggle.cloneNode(true) as HTMLElement;
-  customToggle.parentNode?.replaceChild(newToggle, customToggle);
-  customToggle = newToggle;
-
-  // Toggle dropdown on click
+  // Helper: open/close dropdown
   const toggleDropdown = (open: boolean) => {
-    if (open) {
-      customDropdown.classList.add('active');
-      customDropdown.removeAttribute('hidden');
-      wrapper.setAttribute('aria-expanded', 'true');
-      customToggle.classList.add('hx-icon-interactive-caret-up');
-      customToggle.classList.remove('hx-icon-interactive-caret-down');
-      allOptions[0]?.focus();
-    } else {
-      customDropdown.classList.remove('active');
-      customDropdown.setAttribute('hidden', 'true');
-      wrapper.setAttribute('aria-expanded', 'false');
-      customToggle.classList.remove('hx-icon-interactive-caret-up');
-      customToggle.classList.add('hx-icon-interactive-caret-down');
+    wrapper.setAttribute("aria-expanded", String(open));
+    dropdown.hidden = !open;
+
+    toggle.classList.toggle("hx-icon-interactive-caret-up", open);
+    toggle.classList.toggle("hx-icon-interactive-caret-down", !open);
+
+    if (open && options.length > 0) {
+      options[0].focus();
     }
   };
 
-  customToggle.addEventListener('click', (e) => {
+  // Update selected state on click
+  options.forEach((option) => {
+    option.addEventListener("click", () => {
+      const tierSpan = option.querySelector<HTMLElement>(
+        `.${this.calculatorID}-custom-dropdown-tier`
+      );
+      const tierName = tierSpan?.textContent?.trim();
+
+      if (tierName) {
+        options.forEach((opt) =>
+          opt.classList.remove("uc-icon-action-checkmark")
+        );
+        option.classList.add("uc-icon-action-checkmark");
+
+        toggle.textContent = tierName;
+        dropdown.hidden = true;
+        wrapper.setAttribute("aria-expanded", "false");
+
+        // Your functions
+        this.removeRedbox(toggle.textContent?.trim().toLowerCase() || '');
+        this.redBox();
+
+        toggle.focus();
+      }
+    });
+
+    option.addEventListener("keydown", (e: KeyboardEvent) => {
+      const currentIndex = options.indexOf(option);
+      if (e.key === "ArrowDown") {
+        e.preventDefault();
+        const next = options[(currentIndex + 1) % options.length];
+        next?.focus();
+      } else if (e.key === "ArrowUp") {
+        e.preventDefault();
+        const prev = options[(currentIndex - 1 + options.length) % options.length];
+        prev?.focus();
+      } else if (e.key === "Enter" || e.key === " ") {
+        e.preventDefault();
+        option.click();
+      } else if (e.key === "Escape") {
+        toggleDropdown(false);
+        wrapper.focus();
+      }
+    });
+  });
+
+  // Toggle on click
+  toggle.addEventListener("click", (e) => {
     e.stopPropagation();
-    const isOpen = customDropdown.classList.contains('active');
+    const isOpen = wrapper.getAttribute("aria-expanded") === "true";
     toggleDropdown(!isOpen);
   });
 
-  wrapper.addEventListener('keydown', (e) => {
-    const isOpen = customDropdown.classList.contains('active');
-
+  // Toggle on keydown (Enter, Space, Arrow)
+  wrapper.addEventListener("keydown", (e: KeyboardEvent) => {
+    const isOpen = wrapper.getAttribute("aria-expanded") === "true";
     switch (e.key) {
-      case 'Enter':
-      case ' ':
+      case "Enter":
+      case " ":
         e.preventDefault();
         toggleDropdown(!isOpen);
         break;
-      case 'ArrowDown':
+      case "ArrowDown":
         e.preventDefault();
         if (!isOpen) toggleDropdown(true);
-        else allOptions[0]?.focus();
+        else options[0]?.focus();
         break;
-      case 'Escape':
+      case "Escape":
+        e.preventDefault();
         toggleDropdown(false);
-        wrapper.focus();
         break;
     }
   });
 
-  allOptions.forEach((option, index) => {
-    option.addEventListener('keydown', (e) => {
-      const next = () => allOptions[(index + 1) % allOptions.length]?.focus();
-      const prev = () => allOptions[(index - 1 + allOptions.length) % allOptions.length]?.focus();
-
-      switch (e.key) {
-        case 'ArrowDown':
-          e.preventDefault();
-          next();
-          break;
-        case 'ArrowUp':
-          e.preventDefault();
-          prev();
-          break;
-        case 'Enter':
-        case ' ':
-          e.preventDefault();
-          option.click();
-          break;
-        case 'Escape':
-          toggleDropdown(false);
-          wrapper.focus();
-          break;
-      }
-    });
-
-    option.addEventListener('click', () => {
-      const tierName = option.querySelector(
-        `.${this.calculatorID ?? ''}-custom-dropdown-tier`
-      )?.textContent?.trim();
-
-      if (tierName) {
-        allOptions.forEach((opt) => opt.classList.remove('uc-icon-action-checkmark'));
-        option.classList.add('uc-icon-action-checkmark');
-
-        customToggle.textContent = tierName;
-        this.removeRedbox(selectedTier);
-        this.redBox();
-        toggleDropdown(false);
-        wrapper.focus();
-      }
-    });
+  // Close when clicked outside
+  document.addEventListener("click", (e) => {
+    if (!wrapper.contains(e.target as Node)) {
+      toggleDropdown(false);
+    }
   });
 
-  // Close on outside click
-  document.addEventListener('click', (e) => {
-    if (
-      !wrapper.contains(e.target as Node) &&
-      !customDropdown.contains(e.target as Node)
-    ) {
-      toggleDropdown(false);
+  // Mark default selected tier on load
+  const selectedTier = toggle.textContent?.trim().toLowerCase();
+  options.forEach((option) => {
+    const tierSpan = option.querySelector<HTMLElement>(
+      `.${this.calculatorID}-custom-dropdown-tier`
+    );
+    const tierText = tierSpan?.textContent?.trim().toLowerCase();
+    if (tierText === selectedTier) {
+      option.classList.add("uc-icon-action-checkmark");
+    } else {
+      option.classList.remove("uc-icon-action-checkmark");
     }
   });
 }
