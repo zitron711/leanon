@@ -1,137 +1,118 @@
-private setupCustomDropdown(): void {
-  const toggleSelector = `.${this.calculatorID}-custom-dropdown-toggle`;
-  const dropdownSelector = `.${this.calculatorID}-custom-dropdown-list`;
-  const optionSelector = `.${this.calculatorID}-custom-dropdown-list-option`;
+private setupDropdowns(): void {
+  const toggle = document.querySelector<HTMLElement>(
+    `.${this.calculatorID ?? ''}-change-card-toggle`
+  );
+  const dropdown = document.querySelector<HTMLElement>(
+    `.${this.calculatorID ?? ''}-change-card-dropdown`
+  );
+  const dropdownItems = dropdown?.querySelectorAll<HTMLElement>(
+    `.${this.calculatorID ?? ''}-change-card-dropdown-list`
+  );
 
-  const toggle = document.querySelector<HTMLElement>(toggleSelector);
-  const dropdown = document.querySelector<HTMLElement>(dropdownSelector);
+  if (!toggle || !dropdown || !dropdownItems) return;
 
-  if (!toggle || !dropdown) return;
+  const selectedCardHeading = document
+    .querySelector(
+      `.${this.calculatorID ?? ''}-card-calculator-main-div .selected-card-details .uc-heading .uc-heading_headline p`
+    )?.textContent?.trim();
 
-  const wrapper = toggle.closest<HTMLElement>(`.${this.calculatorID}-custom-dropdown-wrapper`);
-  const options = Array.from(dropdown.querySelectorAll<HTMLElement>(optionSelector));
-
-  if (!wrapper) return;
-
-  // Set ARIA attributes
-  wrapper.setAttribute("role", "combobox");
-  wrapper.setAttribute("aria-haspopup", "listbox");
-  wrapper.setAttribute("aria-expanded", "false");
-  wrapper.setAttribute("aria-controls", `${this.calculatorID}-dropdown-list`);
-  wrapper.setAttribute("tabindex", "0");
-
-  dropdown.setAttribute("role", "listbox");
-  dropdown.setAttribute("id", `${this.calculatorID}-dropdown-list`);
-  dropdown.hidden = true;
-
-  options.forEach((option) => {
-    option.setAttribute("role", "option");
-    option.setAttribute("tabindex", "-1");
+  dropdownItems.forEach((item) => {
+    const dropdownTitle = item.querySelector(
+      `.${this.calculatorID ?? ''}-change-dropdown-title`
+    )?.textContent?.trim();
+    const isSelected = dropdownTitle === selectedCardHeading;
+    item.setAttribute('aria-selected', isSelected.toString());
+    if (isSelected) {
+      item.querySelector(
+        `.${this.calculatorID ?? ''}-change-dropdown-title`
+      )?.classList.add('uc-icon-action-checkmark');
+    } else {
+      item.querySelector(
+        `.${this.calculatorID ?? ''}-change-dropdown-title`
+      )?.classList.remove('uc-icon-action-checkmark');
+    }
   });
 
-  const toggleDropdown = (open: boolean): void => {
-    wrapper.setAttribute("aria-expanded", String(open));
-    dropdown.hidden = !open;
-
-    toggle.classList.toggle("hx-icon-interactive-caret-up", open);
-    toggle.classList.toggle("hx-icon-interactive-caret-down", !open);
-
-    if (open) {
-      const selected = options.find((opt) =>
-        opt.classList.contains("uc-icon-action-checkmark")
-      );
-      (selected ?? options[0]).focus();
+  // Keyboard & click handler
+  toggle.addEventListener('click', () => {
+    const expanded = dropdown.hasAttribute('hidden') === false;
+    dropdown.toggleAttribute('hidden');
+    toggle.setAttribute('aria-expanded', (!expanded).toString());
+    if (!expanded) {
+      dropdownItems[0]?.focus();
     }
-  };
+  });
 
-  // Handle option click
-  options.forEach((option) => {
-    option.addEventListener("click", () => {
-      const span = option.querySelector<HTMLElement>(
-        `.${this.calculatorID}-custom-dropdown-tier`
-      );
-      const tierName = span?.textContent?.trim() || "";
+  toggle.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' || e.key === ' ' || e.code === 'Space') {
+      e.preventDefault();
+      toggle.click();
+    }
+  });
 
-      options.forEach((opt) => opt.classList.remove("uc-icon-action-checkmark"));
-      option.classList.add("uc-icon-action-checkmark");
-
-      toggle.textContent = tierName;
-      toggle.focus();
-      toggleDropdown(false);
-
-      this.removeRedbox(tierName.toLowerCase());
-      this.redBox();
-    });
-
-    // Keyboard navigation on options
-    option.addEventListener("keydown", (event: KeyboardEvent) => {
-      const index = options.indexOf(option);
-      if (event.key === "ArrowDown") {
-        event.preventDefault();
-        const next = options[(index + 1) % options.length];
-        next?.focus();
-      } else if (event.key === "ArrowUp") {
-        event.preventDefault();
-        const prev = options[(index - 1 + options.length) % options.length];
-        prev?.focus();
-      } else if (event.key === "Enter" || event.key === " ") {
-        event.preventDefault();
-        option.click();
-      } else if (event.key === "Escape") {
-        event.preventDefault();
-        toggleDropdown(false);
-        wrapper.focus();
+  dropdownItems.forEach((item, index) => {
+    item.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowDown') {
+        e.preventDefault();
+        dropdownItems[Math.min(index + 1, dropdownItems.length - 1)].focus();
+      } else if (e.key === 'ArrowUp') {
+        e.preventDefault();
+        dropdownItems[Math.max(index - 1, 0)].focus();
+      } else if (e.key === 'Escape') {
+        dropdown.setAttribute('hidden', '');
+        toggle.setAttribute('aria-expanded', 'false');
+        toggle.focus();
+      } else if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        item.click();
       }
     });
-  });
 
-  // Toggle dropdown on toggle click
-  toggle.addEventListener("click", (event: MouseEvent) => {
-    event.stopPropagation();
-    const isOpen = wrapper.getAttribute("aria-expanded") === "true";
-    toggleDropdown(!isOpen);
-  });
+    item.addEventListener('click', () => {
+      dropdownItems.forEach((el) => {
+        el.setAttribute('aria-selected', 'false');
+        el.classList.remove('selected');
+        el.querySelector(
+          `.${this.calculatorID ?? ''}-change-dropdown-title`
+        )?.classList.remove('uc-icon-action-checkmark');
+      });
 
-  // Toggle dropdown on keypress on wrapper
-  wrapper.addEventListener("keydown", (event: KeyboardEvent) => {
-    const isOpen = wrapper.getAttribute("aria-expanded") === "true";
+      item.setAttribute('aria-selected', 'true');
+      item.classList.add('selected');
+      item.querySelector(
+        `.${this.calculatorID ?? ''}-change-dropdown-title`
+      )?.classList.add('uc-icon-action-checkmark');
 
-    switch (event.key) {
-      case "Enter":
-      case " ":
-        event.preventDefault();
-        toggleDropdown(!isOpen);
-        break;
-      case "ArrowDown":
-        event.preventDefault();
-        toggleDropdown(true);
-        options[0]?.focus();
-        break;
-      case "Escape":
-        event.preventDefault();
-        toggleDropdown(false);
-        break;
-    }
-  });
+      const title = item.querySelector(
+        `.${this.calculatorID ?? ''}-change-dropdown-title`
+      )?.textContent?.trim();
+      const xfpath = item.dataset.xfpath;
+      const headImage = item.dataset.headimage;
+      const headTitle = item.dataset.headtitle;
 
-  // Close dropdown when clicking outside
-  document.addEventListener("click", (event: MouseEvent) => {
-    if (!wrapper.contains(event.target as Node)) {
-      toggleDropdown(false);
-    }
-  });
+      if (title && xfpath) {
+        let path = window.location.pathname;
+        if (path.endsWith('.html')) path = path.slice(0, -5);
+        const fetchurl = `${path}.cardsdetails.json?cardXFPath=${xfpath}`;
+        fetch(fetchurl)
+          .then((response) => {
+            if (!response.ok) throw new Error('Network response was not ok');
+            return response.json();
+          })
+          .then((data) => {
+            this.updateImgTitlecard(headImage, headTitle);
+            this.updateUIWithCardData(data);
+          })
+          .catch((error) => {
+            console.error('Error fetching card data:', error);
+          });
+      }
 
-  // Mark selected tier on load
-  const selectedText = toggle.textContent?.trim().toLowerCase();
-  options.forEach((option) => {
-    const span = option.querySelector<HTMLElement>(
-      `.${this.calculatorID}-custom-dropdown-tier`
-    );
-    const text = span?.textContent?.trim().toLowerCase();
-    if (text === selectedText) {
-      option.classList.add("uc-icon-action-checkmark");
-    } else {
-      option.classList.remove("uc-icon-action-checkmark");
-    }
+      dropdown.setAttribute('hidden', '');
+      toggle.setAttribute('aria-expanded', 'false');
+      toggle.focus();
+
+      this.redBox();
+    });
   });
 }
