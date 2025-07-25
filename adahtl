@@ -1,0 +1,46 @@
+<div class="${model.calculatorID}-change-card-wrapper change-card-wrapper">
+  <div
+    id="${model.calculatorID}-change-card-toggle"
+    class="${model.calculatorID}-change-card-toggle change-card-toggle"
+    role="combobox"
+    tabindex="0"
+    aria-haspopup="listbox"
+    aria-expanded="false"
+    aria-controls="${model.calculatorID}-dropdown-listbox"
+    aria-label="${model.cardMenuAriaLabel}"
+  >
+    ${model.menuText}
+  </div>
+
+  <div
+    id="${model.calculatorID}-change-card-dropdown"
+    class="${model.calculatorID}-change-card-dropdown change-card-dropdown"
+    role="listbox"
+    aria-labelledby="${model.calculatorID}-change-card-toggle"
+    hidden
+  >
+    <ul id="${model.calculatorID}-dropdown-listbox">
+      <sly data-sly-test="${model.cardMenu}" data-sly-list.cardMenuMultifield="${model.cardMenu}">
+        <li
+          class="${model.calculatorID}-change-card-dropdown-list change-card-dropdown-list"
+          role="option"
+          tabindex="-1"
+          data-xfpath="${cardMenuMultifield.cardXFPath}"
+          data-headimage="${cardMenuMultifield.imageSmall}"
+          data-headtitle="${cardMenuMultifield.title}"
+          aria-selected="false"
+        >
+          <img src="${cardMenuMultifield.imageSmall}" class="card-thumbnail" alt="" />
+          <div class="change-card-text">
+            <span class="${model.calculatorID}-change-dropdown-leadin change-dropdown-leadin">
+              ${cardMenuMultifield.leadIn}
+            </span>
+            <span class="${model.calculatorID}-change-dropdown-title change-dropdown-title">
+              ${cardMenuMultifield.title}
+            </span>
+          </div>
+        </li>
+      </sly>
+    </ul>
+  </div>
+</div>
