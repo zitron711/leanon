@@ -1,17 +1,12 @@
-.card-masthead {
-  transition: top 0.3s ease-in-out;
-  background-color: white;
-  z-index: 100; // default layer
-
-  &.sticky {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    z-index: 999;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-    animation: slideDown 0.3s ease-in-out;
-  }
+.card-masthead.sticky {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 999;
+  background-color: #fff; // Or your XF background
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+  animation: slideDown 0.3s ease-in-out;
 }
 
 @keyframes slideDown {
@@ -21,10 +16,4 @@
   to {
     transform: translateY(0);
   }
-}
-
-// Optional: hide mobile/desktop offer containers by default and control via JS
-.offermobile,
-.offerdesk {
-  display: none;
 }
