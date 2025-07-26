@@ -1,18 +1,66 @@
-document.querySelectorAll('.monthly-spend').forEach(input => {
-  const wrapper = input.closest('.input-wrapper');
-  const symbol = wrapper.querySelector('.currency-symbol');
+export default class CardMasthead {
+  component: HTMLElement;
+  componentTop: number = 0;
 
-  const toggleSymbol = () => {
-    if (input.value.trim() !== "") {
-      symbol.style.display = 'block';
-    } else {
-      symbol.style.display = 'none';
+  constructor(component: HTMLElement) {
+    this.component = component;
+    this.componentTop = this.component.offsetTop;
+    this.init();
+  }
+
+  init(): void {
+    console.log('CardMasthead initialized');
+
+    const offerBanner = document.getElementById('offerBanner');
+    const mobileBanner = document.getElementById('mobileBanner');
+    const cardOffer = document.querySelector('.uc-background__container--lightgray') as HTMLElement;
+    const customDateEl = document.getElementById('customDate');
+
+    const isMobile = (): boolean => window.innerWidth < 768;
+
+    if (customDateEl) {
+      const selectedDate = new Date();
+      const expiryDate = new Date(customDateEl.innerHTML.trim());
+
+      if (expiryDate <= selectedDate) {
+        offerBanner?.style.setProperty('display', 'none');
+        mobileBanner?.style.setProperty('display', 'none');
+        if (cardOffer) {
+          cardOffer.style.paddingTop = '0px';
+          cardOffer.style.paddingBottom = '0px';
+        }
+      } else {
+        if (isMobile()) {
+          offerBanner?.style.setProperty('display', 'none');
+          mobileBanner?.style.setProperty('display', 'block');
+        } else {
+          offerBanner?.style.setProperty('display', 'block');
+          mobileBanner?.style.setProperty('display', 'none');
+        }
+      }
     }
-  };
 
-  // Initial check
-  toggleSymbol();
+    // Track sticky behavior
+    this.componentTop = this.component.offsetTop;
+    window.addEventListener('scroll', this.handleStickyScroll.bind(this));
+    window.addEventListener('resize', () => {
+      this.componentTop = this.component.offsetTop;
+    });
+  }
 
-  // Bind event
-  input.addEventListener('input', toggleSymbol);
-});
+  handleStickyScroll(): void {
+    const scrollY = window.scrollY;
+    const stickyClass = 'sticky';
+
+    if (scrollY > this.componentTop + this.component.offsetHeight) {
+      this.component.classList.add(stickyClass);
+    } else {
+      this.component.classList.remove(stickyClass);
+    }
+  }
+}
+
+// Called by data-sly-use
+export function CardMastheadComponent(component: HTMLElement): void {
+  new CardMasthead(component);
+}
