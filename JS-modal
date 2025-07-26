@@ -1,66 +1,73 @@
 export default class CardMasthead {
-  component: HTMLElement;
-  componentTop: number = 0;
+  wrapper: HTMLElement;
+  masthead: HTMLElement;
+  offerBanner: HTMLElement | null;
+  mobileBanner: HTMLElement | null;
+  customDate: HTMLElement | null;
+  cardOffer: HTMLElement | null;
+  offsetTop: number;
 
   constructor(component: HTMLElement) {
-    this.component = component;
-    this.componentTop = this.component.offsetTop;
+    this.wrapper = component;
+    this.masthead = component.querySelector('.card-masthead') as HTMLElement;
+
+    const id = component.id;
+    this.offerBanner = document.getElementById(`offerBanner-${id}`);
+    this.mobileBanner = document.getElementById(`mobileBanner-${id}`);
+    this.customDate = document.getElementById(`customDate-${id}`);
+    this.cardOffer = document.querySelector('.uc-background__container--lightgray');
+
+    this.offsetTop = this.wrapper.getBoundingClientRect().top + window.scrollY;
     this.init();
   }
 
   init(): void {
     console.log('CardMasthead initialized');
 
-    const offerBanner = document.getElementById('offerBanner');
-    const mobileBanner = document.getElementById('mobileBanner');
-    const cardOffer = document.querySelector('.uc-background__container--lightgray') as HTMLElement;
-    const customDateEl = document.getElementById('customDate');
-
     const isMobile = (): boolean => window.innerWidth < 768;
 
-    if (customDateEl) {
+    if (this.customDate) {
       const selectedDate = new Date();
-      const expiryDate = new Date(customDateEl.innerHTML.trim());
+      const expiryDate = new Date(this.customDate.innerHTML.trim());
 
       if (expiryDate <= selectedDate) {
-        offerBanner?.style.setProperty('display', 'none');
-        mobileBanner?.style.setProperty('display', 'none');
-        if (cardOffer) {
-          cardOffer.style.paddingTop = '0px';
-          cardOffer.style.paddingBottom = '0px';
+        this.offerBanner?.style.setProperty('display', 'none');
+        this.mobileBanner?.style.setProperty('display', 'none');
+        if (this.cardOffer) {
+          this.cardOffer.style.paddingTop = '0px';
+          this.cardOffer.style.paddingBottom = '0px';
         }
       } else {
         if (isMobile()) {
-          offerBanner?.style.setProperty('display', 'none');
-          mobileBanner?.style.setProperty('display', 'block');
+          this.offerBanner?.style.setProperty('display', 'none');
+          this.mobileBanner?.style.setProperty('display', 'block');
         } else {
-          offerBanner?.style.setProperty('display', 'block');
-          mobileBanner?.style.setProperty('display', 'none');
+          this.offerBanner?.style.setProperty('display', 'block');
+          this.mobileBanner?.style.setProperty('display', 'none');
         }
       }
     }
 
-    // Track sticky behavior
-    this.componentTop = this.component.offsetTop;
-    window.addEventListener('scroll', this.handleStickyScroll.bind(this));
-    window.addEventListener('resize', () => {
-      this.componentTop = this.component.offsetTop;
-    });
+    window.addEventListener('scroll', this.onScroll.bind(this));
+    window.addEventListener('resize', this.onResize.bind(this));
   }
 
-  handleStickyScroll(): void {
+  onScroll(): void {
     const scrollY = window.scrollY;
-    const stickyClass = 'sticky';
-
-    if (scrollY > this.componentTop + this.component.offsetHeight) {
-      this.component.classList.add(stickyClass);
+    if (scrollY >= this.offsetTop) {
+      this.masthead.classList.add('sticky');
     } else {
-      this.component.classList.remove(stickyClass);
+      this.masthead.classList.remove('sticky');
     }
+  }
+
+  onResize(): void {
+    this.offsetTop = this.wrapper.getBoundingClientRect().top + window.scrollY;
   }
 }
 
-// Called by data-sly-use
-export function CardMastheadComponent(component: HTMLElement): void {
-  new CardMasthead(component);
+// Bootstrap all instances
+export function CardMastheadComponent(): void {
+  const instances = document.querySelectorAll('[data-card-masthead]');
+  instances.forEach(component => new CardMasthead(component as HTMLElement));
 }
