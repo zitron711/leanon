@@ -1,36 +1,51 @@
-<div class="calculator-container" data-sly-test="${model.addRewardEarningOption}">
-  <div class="calculator-header-row">
-    <div class="header-cell"></div>
-    <div class="header-cell">${model.spendColumnHeader}</div>
-    <div class="header-cell">${model.cashBackColumnHeader}</div>
-  </div>
+<div data-sly-test="${wcmmode.edit || wcmmode.preview}" class="aem-helper">
+  Edit: Product Card Masthead Component
+</div>
 
-  <div class="calculator-row" data-sly-list.item="${model.addRewardEarningOption}">
-    <div class="reward-cell">
-      <span class="reward-title">${item.rewardsTitle}</span>
-      <span class="reward-description" data-calculation="${item.calculation}">${item.description}</span>
-    </div>
-    <div class="input-cell">
-      <div class="input-wrapper">
-        <span class="currency-symbol">$</span>
-        <input type="number"
-               class="monthly-spend"
-               data-calculation="${item.calculation}"
-               placeholder="${model.spendInput1NullValue}"
-               aria-label="${model.spendInput1AriaLabel}"
-               value="${model.spendInput1}" />
+<div class="sticky-card-masthead-wrapper">
+  <div
+    class="card-masthead ${mastheadVariation || 'rounded-corners'}"
+    id="${masthead.componentID}"
+    data-sly-use.masthead="com.baml.aem.core.models.flagship.CardMasthead"
+    data-action="${wcmmode.edit ? 'card-masthead-component' : ''}"
+    path="${masthead.xfPath}"
+  >
+    <div class="card-masthead_content">
+      <div class="aem-GridColumn aem-GridColumn--default--12 offercontainer offermobile contenttohide" id="mobileBanner">
+        <div
+          data-sly-resource="${'background-2' @ resourceType='global_core/components/unity/background/v1/background'}"
+          data-sly-unwrap="${wcmmode.disabled || wcmmode.edit}"
+        ></div>
+      </div>
+
+      <div class="aem-Grid aem-Grid--12 fullcontainer">
+        <!-- 4-column image -->
+        <div class="aem-GridColumn aem-GridColumn--default--4 picturecontainer">
+          <div
+            data-sly-resource="${'background-1' @ resourceType='global_core/components/unity/background/v1/background'}"
+            data-sly-unwrap="${wcmmode.disabled || wcmmode.edit}"
+          ></div>
+        </div>
+
+        <!-- 8-column text -->
+        <div class="aem-GridColumn aem-GridColumn--default--8">
+          <div class="aem-GridColumn aem-GridColumn--default--1 offercontainer offerdesk" id="offerBanner">
+            <div
+              data-sly-resource="${'background-2' @ resourceType='global_core/components/unity/background/v1/background'}"
+              data-sly-unwrap="${wcmmode.disabled || wcmmode.edit}"
+            ></div>
+          </div>
+
+          <div class="datecontainer hidden-date" id="customDate">${masthead.publishDate}</div>
+
+          <div class="aem-GridColumn aem-GridColumn--default--7 headlinecontainer">
+            <div
+              data-sly-resource="${'background-3' @ resourceType='global_core/components/unity/background/v1/background'}"
+              data-sly-unwrap="${wcmmode.disabled || wcmmode.edit}"
+            ></div>
+          </div>
+        </div>
       </div>
     </div>
-    <div class="cashback-cell">
-      <span class="cashback">$0.00</span>
-    </div>
-  </div>
-
-  <div class="total-divider"></div>
-
-  <div class="calculator-summary-row">
-    <div></div>
-    <div><span class="total-title">${model.totalCashBackText}</span></div>
-    <div class="total-value"><span class="cashback-total">$0.00</span></div>
   </div>
 </div>
