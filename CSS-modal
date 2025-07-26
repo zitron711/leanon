@@ -1,122 +1,30 @@
-<sly data-sly-use.template="global_core/components/flagship/commons/templates.html"
-     data-sly-call="${template.helper}" />
+.card-masthead {
+  transition: top 0.3s ease-in-out;
+  background-color: white;
+  z-index: 100; // default layer
 
-<sly data-sly-use.banner="com.baml.aem.core.models.flagship.ProductStickyBanner"
-     data-sly-set.color="sticky-banner--${banner.bannerColor || 'cool-gray'}"
-     data-sly-set.editVisible="${wcmmode.edit ? 'is-visible' : ''}" />
-
-<div id="${banner.componentId}"
-     class="sticky-banner sticky-banner--product ${color} ${editVisible}"
-     data-sticky-position="${banner.alwaysSticky}"  <!-- use this instead of sticky attribute -->
-     data-mobile-variation="${banner.mobileVariation}"
-     data-action="${wcmmode.edit ? '' : 'sticky-banner-component'}"
-     role="region"
-     aria-label="Sticky promotional banner">
-
-    <sly data-sly-test="${banner.variationCard == 'default'}">
-        <div class="psb_sticky-banner_content" tabindex="0">
-            <div data-sly-resource="#{'icon' @ resourceType='global_core/components/flagship/content/elements/icon'}"></div>
-            <div class="psb_sticky_banner_content_image__psb"
-                 data-sly-resource="#{'image' @ resourceType='global_core/components/flagship/content/elements/image'}"></div>
-            <div class="psb_sticky_banner_content_text_psb"
-                 data-sly-resource="#{'text' @ resourceType='global_core/components/flagship/content/elements/text'}"></div>
-            <div class="psb_sticky_banner_content_button_cta_psb">
-                <div class="psb_sticky_banner_content_button_psb"
-                     data-sly-resource="#{'button' @ resourceType='global_core/components/flagship/content/unity-flagship/unity-button'}">
-                </div>
-            </div>
-        </div>
-    </sly>
-</div>
-
-<style>
-.sticky-banner {
-  position: fixed;
-  width: 100vw;
-  max-width: 100%;
-  left: 0;
-  z-index: 1000;
-  transition: transform 0.3s ease, opacity 0.3s ease;
-  background-color: #fff;
-
-  &[data-sticky-position="top"] {
+  &.sticky {
+    position: fixed;
     top: 0;
-  }
-
-  &[data-sticky-position="bottom"] {
-    bottom: 0;
-  }
-
-  &.is-hidden {
-    transform: translateY(-100%);
-    opacity: 0;
-    pointer-events: none;
-  }
-
-  &[data-sticky-position="bottom"].is-hidden {
-    transform: translateY(100%);
-  }
-
-  // Ensure content is edge-to-edge
-  .psb_sticky-banner_content {
-    margin: 0 auto;
-    padding: 1rem;
-    max-width: 1600px;
-    width: 100%;
-    box-sizing: border-box;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 1rem;
+    left: 0;
+    right: 0;
+    z-index: 999;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    animation: slideDown 0.3s ease-in-out;
   }
 }
 
-</style>
+@keyframes slideDown {
+  from {
+    transform: translateY(-100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
 
-<script>
-(function () {
-  const banners = document.querySelectorAll('.sticky-banner');
-
-  banners.forEach(banner => {
-    const position = banner.getAttribute('data-sticky-position');
-    let lastScrollY = window.scrollY;
-
-    const handleScroll = () => {
-      const currentY = window.scrollY;
-
-      if (position === 'top') {
-        if (currentY > 50) {
-          banner.classList.remove('is-hidden');
-        } else {
-          banner.classList.add('is-hidden');
-        }
-      }
-
-      else if (position === 'default') {
-        if (currentY > 100) {
-          banner.classList.remove('is-hidden');
-        } else {
-          banner.classList.add('is-hidden');
-        }
-      }
-
-      else if (position === 'bottom') {
-        if (currentY < lastScrollY) {
-          banner.classList.remove('is-hidden');
-        } else {
-          banner.classList.add('is-hidden');
-        }
-      }
-
-      lastScrollY = currentY;
-    };
-
-    // Start hidden
-    banner.classList.add('is-hidden');
-
-    window.addEventListener('scroll', handleScroll);
-  });
-})();
-
-
-</script>
+// Optional: hide mobile/desktop offer containers by default and control via JS
+.offermobile,
+.offerdesk {
+  display: none;
+}
