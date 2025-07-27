@@ -1,5 +1,6 @@
 class CardMasthead {
   component: HTMLElement;
+  observer: IntersectionObserver;
 
   constructor(component: HTMLElement) {
     this.component = component;
@@ -7,40 +8,62 @@ class CardMasthead {
   }
 
   init(): void {
-    console.log('Card Masthead initialized');
+    console.log('card-masthead init');
 
     const offerBannerEl = document.getElementById('offerBanner');
     const mobileBannerEl = document.getElementById('mobileBanner');
-    const cardOffer = document.querySelector('.uc-background__container--lightgray') as HTMLElement;
-    const expiryDateEl = document.getElementById('customDate');
+    const cardOffer = document.getElementsByClassName('uc-background__container--lightgray')[0] as HTMLElement;
+    const customDateEl = document.getElementById('customDate');
+    const fullMastheadEl = document.getElementById('fullMasthead');
+    const miniMastheadEl = document.getElementById('miniMasthead');
 
-    // Sticky scroll: hide when near top, show when scrolling down
-    window.addEventListener('scroll', () => {
-      const scrollTop = window.scrollY || document.documentElement.scrollTop;
-      if (scrollTop < 50) {
-        this.component.classList.add('hidden');
+    // Offer Expiry Logic
+    if (customDateEl) {
+      const selectedDate = new Date();
+      const expiryDate = new Date(customDateEl.innerHTML);
+
+      if (expiryDate <= selectedDate) {
+        offerBannerEl?.style && (offerBannerEl.style.display = 'none');
+        mobileBannerEl?.style && (mobileBannerEl.style.display = 'none');
+        cardOffer?.style && (cardOffer.style.paddingTop = cardOffer.style.paddingBottom = '0px');
       } else {
-        this.component.classList.remove('hidden');
-      }
-    });
+        offerBannerEl?.style && (offerBannerEl.style.display = 'block');
+        mobileBannerEl?.style && (mobileBannerEl.style.display = 'block');
 
-    // Expiry logic
-    if (expiryDateEl) {
-      const currentDate = new Date();
-      const expiryDate = new Date(expiryDateEl.innerText);
-
-      if (expiryDate <= currentDate) {
-        offerBannerEl && (offerBannerEl.style.display = 'none');
-        mobileBannerEl && (mobileBannerEl.style.display = 'none');
-        cardOffer && (cardOffer.style.paddingTop = '0px');
-        cardOffer && (cardOffer.style.paddingBottom = '0px');
-      } else {
-        const isMobile = (): boolean => window.innerWidth < 768;
-        if (isMobile() && offerBannerEl) {
+        if (window.innerWidth < 768) {
           offerBannerEl.style.display = 'none';
         }
       }
     }
+
+    // Add scroll observer for sticky logic
+    const observerTarget = document.createElement('div');
+    observerTarget.style.position = 'absolute';
+    observerTarget.style.top = '0';
+    observerTarget.style.height = '1px';
+    observerTarget.style.width = '100%';
+
+    this.component.prepend(observerTarget);
+
+    this.observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.intersectionRatio === 0) {
+          this.component.classList.add('is-sticky-active');
+          miniMastheadEl?.classList.add('is-visible');
+          fullMastheadEl?.classList.add('is-hidden');
+        } else {
+          this.component.classList.remove('is-sticky-active');
+          miniMastheadEl?.classList.remove('is-visible');
+          fullMastheadEl?.classList.remove('is-hidden');
+        }
+      },
+      {
+        rootMargin: '0px 0px 0px 0px',
+        threshold: 0,
+      }
+    );
+
+    this.observer.observe(observerTarget);
   }
 }
 
