@@ -1,73 +1,49 @@
-export default class CardMasthead {
-  wrapper: HTMLElement;
-  masthead: HTMLElement;
-  offerBanner: HTMLElement | null;
-  mobileBanner: HTMLElement | null;
-  customDate: HTMLElement | null;
-  cardOffer: HTMLElement | null;
-  offsetTop: number;
+class CardMasthead {
+  component: HTMLElement;
 
   constructor(component: HTMLElement) {
-    this.wrapper = component;
-    this.masthead = component.querySelector('.card-masthead') as HTMLElement;
-
-    const id = component.id;
-    this.offerBanner = document.getElementById(`offerBanner-${id}`);
-    this.mobileBanner = document.getElementById(`mobileBanner-${id}`);
-    this.customDate = document.getElementById(`customDate-${id}`);
-    this.cardOffer = document.querySelector('.uc-background__container--lightgray');
-
-    this.offsetTop = this.wrapper.getBoundingClientRect().top + window.scrollY;
+    this.component = component;
     this.init();
   }
 
   init(): void {
-    console.log('CardMasthead initialized');
+    console.log('Card Masthead initialized');
 
-    const isMobile = (): boolean => window.innerWidth < 768;
+    const offerBannerEl = document.getElementById('offerBanner');
+    const mobileBannerEl = document.getElementById('mobileBanner');
+    const cardOffer = document.querySelector('.uc-background__container--lightgray') as HTMLElement;
+    const expiryDateEl = document.getElementById('customDate');
 
-    if (this.customDate) {
-      const selectedDate = new Date();
-      const expiryDate = new Date(this.customDate.innerHTML.trim());
-
-      if (expiryDate <= selectedDate) {
-        this.offerBanner?.style.setProperty('display', 'none');
-        this.mobileBanner?.style.setProperty('display', 'none');
-        if (this.cardOffer) {
-          this.cardOffer.style.paddingTop = '0px';
-          this.cardOffer.style.paddingBottom = '0px';
-        }
+    // Sticky scroll: hide when near top, show when scrolling down
+    window.addEventListener('scroll', () => {
+      const scrollTop = window.scrollY || document.documentElement.scrollTop;
+      if (scrollTop < 50) {
+        this.component.classList.add('hidden');
       } else {
-        if (isMobile()) {
-          this.offerBanner?.style.setProperty('display', 'none');
-          this.mobileBanner?.style.setProperty('display', 'block');
-        } else {
-          this.offerBanner?.style.setProperty('display', 'block');
-          this.mobileBanner?.style.setProperty('display', 'none');
+        this.component.classList.remove('hidden');
+      }
+    });
+
+    // Expiry logic
+    if (expiryDateEl) {
+      const currentDate = new Date();
+      const expiryDate = new Date(expiryDateEl.innerText);
+
+      if (expiryDate <= currentDate) {
+        offerBannerEl && (offerBannerEl.style.display = 'none');
+        mobileBannerEl && (mobileBannerEl.style.display = 'none');
+        cardOffer && (cardOffer.style.paddingTop = '0px');
+        cardOffer && (cardOffer.style.paddingBottom = '0px');
+      } else {
+        const isMobile = (): boolean => window.innerWidth < 768;
+        if (isMobile() && offerBannerEl) {
+          offerBannerEl.style.display = 'none';
         }
       }
     }
-
-    window.addEventListener('scroll', this.onScroll.bind(this));
-    window.addEventListener('resize', this.onResize.bind(this));
-  }
-
-  onScroll(): void {
-    const scrollY = window.scrollY;
-    if (scrollY >= this.offsetTop) {
-      this.masthead.classList.add('sticky');
-    } else {
-      this.masthead.classList.remove('sticky');
-    }
-  }
-
-  onResize(): void {
-    this.offsetTop = this.wrapper.getBoundingClientRect().top + window.scrollY;
   }
 }
 
-// Bootstrap all instances
-export function CardMastheadComponent(): void {
-  const instances = document.querySelectorAll('[data-card-masthead]');
-  instances.forEach(component => new CardMasthead(component as HTMLElement));
+export default function CardMastheadComponent({ component }: { component: HTMLElement }): void {
+  new CardMasthead(component);
 }
