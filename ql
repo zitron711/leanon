@@ -1,15 +1,22 @@
-<!-- /apps/your-site/components/copylink/copylink.html -->
-<sly data-sly-use.template="/libs/wcm/foundation/components/utils/template.html" />
+<input type="number"
+  class="monthly-spend monthly-spend_index-${itemList.index}"
+  data-calculation="${item.calculation}"
+  placeholder="${model.spendInput1Nullvalue}"
+  aria-label="${model.spendInput1AriaLabel}"
+  value="${model.spendInput1}"
+  onkeydown="return event.key.match(/[0-9.]|Backspace|Delete|ArrowLeft|ArrowRight|Tab/)"
+  oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"
+/>
 
-<div class="copy-link-wrapper">
-    <a href="javascript:void(0)" id="copy-link-btn" class="copy-link">
-        <!-- Icon via data-sly-resource -->
-        <span class="copy-link-icon" aria-hidden="true" data-sly-resource="${'icon' @ resourceType='your-site/components/content/icon'}"></span>
 
-        <!-- Text -->
-        <span class="copy-link-text">Copy Link</span>
-    </a>
+/* Chrome, Safari, Edge */
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
 
-    <!-- Success message -->
-    <span id="copy-success-msg" class="copy-success-msg" role="alert" aria-live="polite">Link copied!</span>
-</div>
+/* Firefox */
+input[type="number"] {
+  -moz-appearance: textfield;
+}
