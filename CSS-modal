@@ -1,19 +1,12 @@
-.card-masthead.sticky {
-  position: fixed;
+.card-masthead.is-sticky-top {
+  position: sticky;
   top: 0;
-  left: 0;
-  right: 0;
   z-index: 999;
-  background-color: #fff; // Or your XF background
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
-  animation: slideDown 0.3s ease-in-out;
-}
+  background-color: #fff;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
 
-@keyframes slideDown {
-  from {
-    transform: translateY(-100%);
-  }
-  to {
-    transform: translateY(0);
+  &.hidden {
+    display: none;
   }
 }
